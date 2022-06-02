@@ -1,0 +1,22 @@
+plugins {
+    id 'java'
+}
+
+group 'com.fullcycle.catalogo.admin.application'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // importa o modulo domain
+    implementation(project(":domain"))
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
+}
+
+test {
+    useJUnitPlatform()
+}
