@@ -13,6 +13,13 @@ public interface ValidationHandler {
         return Objects.nonNull(getErrors()) && !getErrors().isEmpty();
     }
 
+    default Error getFirstError() {
+        if (Objects.nonNull(getErrors()) && !getErrors().isEmpty()) {
+            return getErrors().get(0);
+        }
+        return null;
+    }
+
     @FunctionalInterface
     interface Validation {
         void validate();
