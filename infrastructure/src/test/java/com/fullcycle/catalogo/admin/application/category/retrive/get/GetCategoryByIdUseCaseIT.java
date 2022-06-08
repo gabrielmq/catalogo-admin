@@ -15,8 +15,7 @@ import org.springframework.boot.test.mock.mockito.SpyBean;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doThrow;
 
@@ -50,9 +49,9 @@ public class GetCategoryByIdUseCaseIT {
         assertEquals(expectedName, actualCategory.name());
         assertEquals(expectedDescription, actualCategory.description());
         assertEquals(expectedIsActive, actualCategory.isActive());
-        assertEquals(aCategory.getCreatedAt(), actualCategory.createdAt());
-        assertEquals(aCategory.getUpdatedAt(), actualCategory.updatedAt());
-        assertEquals(aCategory.getDeletedAt(), actualCategory.deletedAt());
+        assertEquals(aCategory.getCreatedAt(), actualCategory.createdAt().toEpochMilli());
+        assertEquals(aCategory.getUpdatedAt(), actualCategory.updatedAt().toEpochMilli());
+        assertEquals(aCategory.getDeletedAt(), actualCategory.deletedAt().toEpochMilli());
     }
 
     @Test

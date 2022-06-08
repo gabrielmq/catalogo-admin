@@ -10,11 +10,11 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.lang.annotation.*;
 
+@Inherited
+@ActiveProfiles("test")
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@Inherited
-@SpringBootTest(classes = WebServerConfiguration.class)
-@ActiveProfiles("test")
 @ExtendWith(CleanUpExtension.class)
+@SpringBootTest(classes = WebServerConfiguration.class)
 public @interface IntegrationTest {
 }
