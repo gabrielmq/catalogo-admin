@@ -3,6 +3,7 @@ package com.fullcycle.catalogo.admin.infrastructure.api;
 import com.fullcycle.catalogo.admin.domain.pagination.Pagination;
 import com.fullcycle.catalogo.admin.infrastructure.category.models.CategoryAPIOutput;
 import com.fullcycle.catalogo.admin.infrastructure.category.models.CreateCategoryAPIInput;
+import com.fullcycle.catalogo.admin.infrastructure.category.models.UpdateCategoryAPIInput;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -23,7 +24,7 @@ public interface CategoryAPI {
     @ApiResponses(value = {
         @ApiResponse(responseCode = "201", description = "Created successfully"),
         @ApiResponse(responseCode = "422", description = "A validation error was thrown"),
-        @ApiResponse(responseCode = "500", description = "An internal server error was thrown"),
+        @ApiResponse(responseCode = "500", description = "An internal server error was thrown")
     })
     ResponseEntity<?> createCategory(@RequestBody CreateCategoryAPIInput input);
 
@@ -32,7 +33,7 @@ public interface CategoryAPI {
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Listed successfully"),
         @ApiResponse(responseCode = "400", description = "A invalid parameter was received"),
-        @ApiResponse(responseCode = "500", description = "An internal server error was thrown"),
+        @ApiResponse(responseCode = "500", description = "An internal server error was thrown")
     })
     Pagination<?> listCategories(
         @RequestParam(name = "search", required = false, defaultValue = "") String search,
@@ -51,7 +52,20 @@ public interface CategoryAPI {
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Category retrieve successfully"),
         @ApiResponse(responseCode = "404", description = "Category was not found"),
-        @ApiResponse(responseCode = "500", description = "An internal server error was thrown"),
+        @ApiResponse(responseCode = "500", description = "An internal server error was thrown")
     })
     ResponseEntity<CategoryAPIOutput> getById(@PathVariable String id);
+
+    @PutMapping(
+        value = "{id}",
+        consumes = APPLICATION_JSON_VALUE,
+        produces = APPLICATION_JSON_VALUE
+    )
+    @Operation(summary = "Update a category by it's identifier")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Category updated successfully"),
+        @ApiResponse(responseCode = "404", description = "Category was not found"),
+        @ApiResponse(responseCode = "500", description = "An internal server error was thrown")
+    })
+    ResponseEntity<?> updateById(@PathVariable String id, @RequestBody UpdateCategoryAPIInput input);
 }

@@ -6,6 +6,8 @@ import com.fullcycle.catalogo.admin.application.category.create.CreateCategoryOu
 import com.fullcycle.catalogo.admin.application.category.create.CreateCategoryUseCase;
 import com.fullcycle.catalogo.admin.application.category.retrieve.get.CategoryOutput;
 import com.fullcycle.catalogo.admin.application.category.retrieve.get.GetCategoryByIdUseCase;
+import com.fullcycle.catalogo.admin.application.category.update.UpdateCategoryOutput;
+import com.fullcycle.catalogo.admin.application.category.update.UpdateCategoryUseCase;
 import com.fullcycle.catalogo.admin.domain.category.Category;
 import com.fullcycle.catalogo.admin.domain.category.CategoryID;
 import com.fullcycle.catalogo.admin.domain.exceptions.DomainException;
@@ -13,6 +15,7 @@ import com.fullcycle.catalogo.admin.domain.exceptions.NotFoundException;
 import com.fullcycle.catalogo.admin.domain.validation.Error;
 import com.fullcycle.catalogo.admin.domain.validation.handler.Notification;
 import com.fullcycle.catalogo.admin.infrastructure.category.models.CreateCategoryAPIInput;
+import com.fullcycle.catalogo.admin.infrastructure.category.models.UpdateCategoryAPIInput;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -28,8 +31,7 @@ import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -44,6 +46,9 @@ public class CategoryAPITest {
 
     @MockBean
     private GetCategoryByIdUseCase getCategoryByIdUseCase;
+
+    @MockBean
+    private UpdateCategoryUseCase updateCategoryUseCase;
 
     @Autowired
     private ObjectMapper mapper;
@@ -199,5 +204,105 @@ public class CategoryAPITest {
             .andExpect(jsonPath("$.message", equalTo(expectedErrorMessage)));
 
         verify(getCategoryByIdUseCase, times(0)).execute(eq(expectedId.getValue()));
+    }
+
+    @Test
+    public void givenAValidCommand_whenCallsUpdateCategory_thenShouldReturnCategoryId() throws Exception {
+        final var expectedId = "123";
+        final var expectedName = "Filmes";
+        final var expectedDescription = "A categoria mais assistida";
+        final var expectedIsActive = true;
+
+        final var aInput =
+                new UpdateCategoryAPIInput(expectedName, expectedDescription, expectedIsActive);
+
+        when(updateCategoryUseCase.execute(any()))
+                .thenReturn(Right(UpdateCategoryOutput.from(expectedId)));
+
+        final var request = put("/categories/{id}", expectedId)
+                .accept(APPLICATION_JSON)
+                .contentType(APPLICATION_JSON)
+                .content(mapper.writeValueAsString(aInput));
+
+        mvc.perform(request)
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(header().string("Content-Type", APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$.id", equalTo(expectedId)));
+
+        verify(updateCategoryUseCase, times(1))
+            .execute(argThat(cmd ->
+                Objects.equals(expectedName, cmd.name())
+                && Objects.equals(expectedDescription, cmd.description())
+                && Objects.equals(expectedIsActive, cmd.isActive())
+            ));
+    }
+
+    @Test
+    public void givenACommandWithInvalidID_whenCallsUpdateCategory_thenShouldReturnNotFound() throws Exception {
+        final var expectedId = "not-found";
+        final var expectedName = "Filmes";
+        final var expectedDescription = "A categoria mais assistida";
+        final var expectedIsActive = true;
+        final var expectedErrorMessage = "Category with ID not-found was not found";
+
+        final var aInput =
+                new UpdateCategoryAPIInput(expectedName, expectedDescription, expectedIsActive);
+
+        when(updateCategoryUseCase.execute(any()))
+                .thenThrow(NotFoundException.with(Category.class, CategoryID.from(expectedId)));
+
+        final var request = put("/categories/{id}", expectedId)
+                .accept(APPLICATION_JSON)
+                .contentType(APPLICATION_JSON)
+                .content(mapper.writeValueAsString(aInput));
+
+        mvc.perform(request)
+            .andDo(print())
+            .andExpect(status().isNotFound())
+            .andExpect(header().string("Content-Type", APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$.message", equalTo(expectedErrorMessage)));
+
+        verify(updateCategoryUseCase, times(1))
+            .execute(argThat(cmd ->
+                Objects.equals(expectedName, cmd.name())
+                && Objects.equals(expectedDescription, cmd.description())
+                && Objects.equals(expectedIsActive, cmd.isActive())
+            ));
+    }
+
+    @Test
+    public void givenAInvalidName_whenCallsUpdateCategory_thenShouldReturnNotification() throws Exception {
+        final var expectedId = "123";
+        final var expectedName = "Filmes";
+        final var expectedDescription = "A categoria mais assistida";
+        final var expectedIsActive = true;
+        final var expectedErrorMessage = "'name' should not be null";
+        final var expectedErrorCount = 1;
+
+        final var aInput =
+                new UpdateCategoryAPIInput(expectedName, expectedDescription, expectedIsActive);
+
+        when(updateCategoryUseCase.execute(any()))
+            .thenReturn(Left(Notification.create(new Error(expectedErrorMessage))));
+
+        final var request = put("/categories/{id}", expectedId)
+                .accept(APPLICATION_JSON)
+                .contentType(APPLICATION_JSON)
+                .content(mapper.writeValueAsString(aInput));
+
+        mvc.perform(request)
+            .andDo(print())
+            .andExpect(status().isUnprocessableEntity())
+            .andExpect(header().string("Content-Type", APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$.errors", hasSize(expectedErrorCount)))
+            .andExpect(jsonPath("$.errors[0].message", equalTo(expectedErrorMessage)));
+
+        verify(updateCategoryUseCase, times(1))
+            .execute(argThat(cmd ->
+                Objects.equals(expectedName, cmd.name())
+                && Objects.equals(expectedDescription, cmd.description())
+                && Objects.equals(expectedIsActive, cmd.isActive())
+            ));
     }
 }
