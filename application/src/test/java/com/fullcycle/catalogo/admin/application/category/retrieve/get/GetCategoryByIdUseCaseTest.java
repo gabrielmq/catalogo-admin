@@ -4,6 +4,7 @@ import com.fullcycle.catalogo.admin.domain.category.Category;
 import com.fullcycle.catalogo.admin.domain.category.CategoryGateway;
 import com.fullcycle.catalogo.admin.domain.category.CategoryID;
 import com.fullcycle.catalogo.admin.domain.exceptions.DomainException;
+import com.fullcycle.catalogo.admin.domain.exceptions.NotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -63,7 +64,7 @@ public class GetCategoryByIdUseCaseTest {
         when(categoryGateway.findById(eq(expectedId))).thenReturn(Optional.empty());
 
         final var actualException =
-                assertThrows(DomainException.class, () -> useCase.execute(expectedId.getValue()));
+                assertThrows(NotFoundException.class, () -> useCase.execute(expectedId.getValue()));
 
         assertEquals(expectedErrorMessage, actualException.getMessage());
 
