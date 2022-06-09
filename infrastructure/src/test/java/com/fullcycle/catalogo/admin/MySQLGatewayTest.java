@@ -13,7 +13,7 @@ import java.lang.annotation.*;
 @Inherited
 @DataJpaTest
 @ActiveProfiles("test")
-@ExtendWith(CleanUpExtension.class)
+@ExtendWith(MySQLCleanUpExtension.class)
 @ComponentScan(includeFilters = {
     @ComponentScan.Filter(type = FilterType.REGEX, pattern = ".[MySQLGateway]")
 })
