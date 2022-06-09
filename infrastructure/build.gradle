@@ -16,7 +16,6 @@ plugins {
 }
 
 group 'com.fullcycle.catalogo.admin.infrastructure'
-version '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
@@ -32,6 +31,8 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":application"))
 
+    implementation('io.vavr:vavr:0.10.4')
+    implementation('com.fasterxml.jackson.module:jackson-module-afterburner')
     implementation('mysql:mysql-connector-java')
 
     implementation('org.springframework.boot:spring-boot-starter-web') {
@@ -39,8 +40,11 @@ dependencies {
     }
     implementation('org.springframework.boot:spring-boot-starter-undertow')
     implementation('org.springframework.boot:spring-boot-starter-data-jpa')
+    implementation('org.springdoc:springdoc-openapi-webmvc-core:1.6.8')
+    implementation('org.springdoc:springdoc-openapi-ui:1.6.8')
 
     testImplementation('org.springframework.boot:spring-boot-starter-test')
+    testImplementation('org.flywaydb:flyway-core')
 
     testRuntimeOnly('com.h2database:h2')
 }

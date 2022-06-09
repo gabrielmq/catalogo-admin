@@ -1,0 +1,23 @@
+package com.fullcycle.catalogo.admin;
+
+import com.fullcycle.catalogo.admin.infrastructure.configuration.ObjectMapperConfiguration;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.context.annotation.Import;
+import org.springframework.core.annotation.AliasFor;
+import org.springframework.test.context.ActiveProfiles;
+
+import java.lang.annotation.*;
+
+import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
+@Inherited
+@WebMvcTest
+@ActiveProfiles("test")
+@Target(TYPE)
+@Retention(RUNTIME)
+@Import(ObjectMapperConfiguration.class)
+public @interface ControllerTest {
+    @AliasFor(annotation = WebMvcTest.class, attribute = "controllers")
+    Class<?>[] controllers() default {};
+}
