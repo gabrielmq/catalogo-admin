@@ -47,7 +47,6 @@ public interface CategoryAPI {
 
     @GetMapping(
         value = "{id}",
-        consumes = APPLICATION_JSON_VALUE,
         produces = APPLICATION_JSON_VALUE
     )
     @Operation(summary = "Get an category by it's identifier")
@@ -73,7 +72,7 @@ public interface CategoryAPI {
 
     @DeleteMapping(
         value = "{id}",
-        consumes = APPLICATION_JSON_VALUE
+        produces = APPLICATION_JSON_VALUE
     )
     @ResponseStatus(NO_CONTENT)
     @Operation(summary = "Delete a category by it's identifier")
