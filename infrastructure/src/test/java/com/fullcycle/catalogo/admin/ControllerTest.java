@@ -13,7 +13,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Inherited
 @WebMvcTest
-@ActiveProfiles("test")
+@ActiveProfiles("test-integration")
 @Target(TYPE)
 @Retention(RUNTIME)
 @Import(ObjectMapperConfiguration.class)

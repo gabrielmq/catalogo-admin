@@ -17,7 +17,7 @@ import static org.springframework.context.annotation.FilterType.ASSIGNABLE_TYPE;
 @Inherited
 @Target(TYPE)
 @Retention(RUNTIME)
-@ActiveProfiles("test")
+@ActiveProfiles("test-integration")
 @JsonTest(includeFilters = {
     @ComponentScan.Filter(type = ASSIGNABLE_TYPE, classes = ObjectMapperConfiguration.class)
 })
