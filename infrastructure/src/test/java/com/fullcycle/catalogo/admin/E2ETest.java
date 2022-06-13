@@ -8,10 +8,10 @@ import org.springframework.test.context.ActiveProfiles;
 import java.lang.annotation.*;
 
 @Inherited
-@ActiveProfiles("test-integration")
+@ActiveProfiles("test-e2e")
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @ExtendWith(MySQLCleanUpExtension.class)
 @SpringBootTest(classes = WebServerConfiguration.class)
-public @interface IntegrationTest {
+public @interface E2ETest {
 }
