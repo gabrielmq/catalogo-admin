@@ -3,7 +3,7 @@ package com.fullcycle.catalogo.admin.infrastructure.category;
 import com.fullcycle.catalogo.admin.domain.category.Category;
 import com.fullcycle.catalogo.admin.domain.category.CategoryGateway;
 import com.fullcycle.catalogo.admin.domain.category.CategoryID;
-import com.fullcycle.catalogo.admin.domain.category.CategorySearchQuery;
+import com.fullcycle.catalogo.admin.domain.pagination.SearchQuery;
 import com.fullcycle.catalogo.admin.domain.pagination.Pagination;
 import com.fullcycle.catalogo.admin.infrastructure.category.persistence.CategoryJpaEntity;
 import com.fullcycle.catalogo.admin.infrastructure.category.persistence.CategoryRepository;
@@ -50,7 +50,7 @@ public class CategoryMySQLGateway implements CategoryGateway {
     }
 
     @Override
-    public Pagination<Category> findAll(final CategorySearchQuery aQuery) {
+    public Pagination<Category> findAll(final SearchQuery aQuery) {
         final var page = PageRequest.of(
             aQuery.page(),
             aQuery.perPage(),

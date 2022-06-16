@@ -12,6 +12,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 public class Genre extends AggregateRoot<GenreID> {
     private String name;
@@ -83,6 +84,54 @@ public class Genre extends AggregateRoot<GenreID> {
     @Override
     public void validate(final ValidationHandler handler) {
         new GenreValidator(this, handler).validate();
+    }
+
+    public Genre update(final String aName, final boolean isActive, final List<CategoryID> categories) {
+        if (isActive) {
+            activate();
+        } else {
+            deactivate();
+        }
+        this.name = aName;
+        this.categories = new ArrayList<>(Objects.nonNull(categories) ? categories : Collections.emptyList());
+        this.updatedAt = InstantUtils.now();
+        selfValidation();
+        return this;
+    }
+
+    public Genre deactivate() {
+        if (Objects.isNull(getDeletedAt())) {
+            this.deletedAt = InstantUtils.now();
+        }
+        this.active = false;
+        this.updatedAt = InstantUtils.now();
+        return this;
+    }
+
+    public Genre activate() {
+        this.deletedAt = null;
+        this.active = true;
+        this.updatedAt = InstantUtils.now();
+        return this;
+    }
+
+    public Genre addCategory(final CategoryID aCategoryID) {
+        if (Objects.isNull(aCategoryID)) {
+            return this;
+        }
+
+        this.categories.add(aCategoryID);
+        this.updatedAt = InstantUtils.now();
+        return this;
+    }
+
+    public Genre removeCategory(final CategoryID aCategoryID) {
+        if (Objects.isNull(aCategoryID)) {
+            return this;
+        }
+        this.categories.remove(aCategoryID);
+        this.updatedAt = InstantUtils.now();
+        return this;
     }
 
     public String getName() {
