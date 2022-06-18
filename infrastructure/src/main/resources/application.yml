@@ -1,5 +1,6 @@
 server:
   port: 8080
+  shutdown: graceful
   servlet:
     context-path: /api
   compression:
@@ -12,6 +13,8 @@ server:
       io: 4 # One IO thread per CPU core is a reasonable default: https://undertow.io/undertow-docs/undertow-docs-2.1.0/index.html#listeners-2
 
 spring:
+  lifecycle:
+    timeout-per-shutdown-phase: 500ms
   datasource:
     url: jdbc:mysql://${mysql.url}/${mysql.schema}?useSSL=true&serverTimezone=UTC&characterEncoding=UTF-8
     username: ${mysql.username}
