@@ -1,16 +1,13 @@
 package com.fullcycle.catalogo.admin.application.genre.create;
 
+import com.fullcycle.catalogo.admin.application.UseCaseTest;
 import com.fullcycle.catalogo.admin.domain.category.CategoryGateway;
 import com.fullcycle.catalogo.admin.domain.category.CategoryID;
 import com.fullcycle.catalogo.admin.domain.exceptions.NotificationException;
 import com.fullcycle.catalogo.admin.domain.genre.GenreGateway;
-import com.fullcycle.catalogo.admin.domain.validation.handler.Notification;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 import java.util.Objects;
@@ -20,8 +17,7 @@ import static org.mockito.AdditionalAnswers.returnsFirstArg;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(MockitoExtension.class)
-public class CreateGenreUseCaseTest {
+public class CreateGenreUseCaseTest extends UseCaseTest {
 
     @InjectMocks
     private DefaultCreateGenreUseCase useCase;
@@ -31,6 +27,11 @@ public class CreateGenreUseCaseTest {
 
     @Mock
     private CategoryGateway categoryGateway;
+
+    @Override
+    protected List<Object> getMocks() {
+        return List.of(genreGateway, categoryGateway);
+    }
 
     @Test
     public void givenAValidCommand_whenCallsCreateGenre_thenShouldReturnGenreId() {
