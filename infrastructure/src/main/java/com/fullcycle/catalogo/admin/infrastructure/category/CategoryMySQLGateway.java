@@ -83,7 +83,7 @@ public class CategoryMySQLGateway implements CategoryGateway {
     }
 
     @Override
-    public List<CategoryID> existsByIds(Iterable<CategoryID> categoryIDs) {
+    public List<CategoryID> existsByIds(final Iterable<CategoryID> categoryIDs) {
         final var ids = StreamSupport.stream(categoryIDs.spliterator(), false)
                 .map(CategoryID::getValue)
                 .toList();
