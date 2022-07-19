@@ -1,36 +1,31 @@
 package com.fullcycle.catalogo.admin.application.category.retrieve.list;
 
-import com.fullcycle.catalogo.admin.application.category.retrieve.get.CategoryOutput;
+import com.fullcycle.catalogo.admin.application.UseCaseTest;
 import com.fullcycle.catalogo.admin.domain.category.Category;
 import com.fullcycle.catalogo.admin.domain.category.CategoryGateway;
-import com.fullcycle.catalogo.admin.domain.category.CategorySearchQuery;
 import com.fullcycle.catalogo.admin.domain.pagination.Pagination;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
+import com.fullcycle.catalogo.admin.domain.pagination.SearchQuery;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(MockitoExtension.class)
-public class ListCategoriesUseCaseTest {
+public class ListCategoriesUseCaseTest extends UseCaseTest {
     @InjectMocks
     private DefaultListCategoriesUseCase useCase;
 
     @Mock
     private CategoryGateway categoryGateway;
 
-    @BeforeEach
-    void cleanUp() {
-        reset(categoryGateway);
+    @Override
+    protected List<Object> getMocks() {
+        return List.of(categoryGateway);
     }
 
     @Test
@@ -48,7 +43,7 @@ public class ListCategoriesUseCaseTest {
         final var expectedItemsCount = 2;
 
         final var aQuery =
-            new CategorySearchQuery(expectedPage, expectedPerPage, expectedTerms, expectedSort, expectedDirection);
+            new SearchQuery(expectedPage, expectedPerPage, expectedTerms, expectedSort, expectedDirection);
 
         final var expectedPagination =
             new Pagination<>(expectedPage, expectedPerPage, categories.size(), categories);
@@ -80,7 +75,7 @@ public class ListCategoriesUseCaseTest {
         final var expectedDirection = "asc";
 
         final var aQuery =
-                new CategorySearchQuery(expectedPage, expectedPerPage, expectedTerms, expectedSort, expectedDirection);
+                new SearchQuery(expectedPage, expectedPerPage, expectedTerms, expectedSort, expectedDirection);
 
         final var expectedPagination =
                 new Pagination<>(expectedPage, expectedPerPage, categories.size(), categories);
@@ -109,7 +104,7 @@ public class ListCategoriesUseCaseTest {
         final var expectedErrorMessage = "Gateway error";
 
         final var aQuery =
-            new CategorySearchQuery(expectedPage, expectedPerPage, expectedTerms, expectedSort, expectedDirection);
+            new SearchQuery(expectedPage, expectedPerPage, expectedTerms, expectedSort, expectedDirection);
 
         when(categoryGateway.findAll(eq(aQuery)))
             .thenThrow(new IllegalStateException(expectedErrorMessage));

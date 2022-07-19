@@ -2,7 +2,7 @@ package com.fullcycle.catalogo.admin.infrastructure.category;
 
 import com.fullcycle.catalogo.admin.domain.category.Category;
 import com.fullcycle.catalogo.admin.domain.category.CategoryID;
-import com.fullcycle.catalogo.admin.domain.category.CategorySearchQuery;
+import com.fullcycle.catalogo.admin.domain.pagination.SearchQuery;
 import com.fullcycle.catalogo.admin.MySQLGatewayTest;
 import com.fullcycle.catalogo.admin.infrastructure.category.persistence.CategoryJpaEntity;
 import com.fullcycle.catalogo.admin.infrastructure.category.persistence.CategoryRepository;
@@ -172,7 +172,7 @@ public class CategoryMySQLGatewayTest {
 
         assertEquals(3, categoryRepository.count());
 
-        final var query = new CategorySearchQuery(0, 1, "", "name", "asc");
+        final var query = new SearchQuery(0, 1, "", "name", "asc");
         final var actualResult = categoryGateway.findAll(query);
 
         assertEquals(expectedPage, actualResult.currentPage());
@@ -190,7 +190,7 @@ public class CategoryMySQLGatewayTest {
 
         assertEquals(0, categoryRepository.count());
 
-        final var query = new CategorySearchQuery(0, 1, "", "name", "asc");
+        final var query = new SearchQuery(0, 1, "", "name", "asc");
         final var actualResult = categoryGateway.findAll(query);
 
         assertEquals(expectedPage, actualResult.currentPage());
@@ -219,7 +219,7 @@ public class CategoryMySQLGatewayTest {
 
         assertEquals(3, categoryRepository.count());
 
-        var query = new CategorySearchQuery(0, 1, "", "name", "asc");
+        var query = new SearchQuery(0, 1, "", "name", "asc");
         var actualResult = categoryGateway.findAll(query);
 
         assertEquals(expectedPage, actualResult.currentPage());
@@ -231,7 +231,7 @@ public class CategoryMySQLGatewayTest {
         // Page 1
         expectedPage = 1;
 
-        query = new CategorySearchQuery(1, 1, "", "name", "asc");
+        query = new SearchQuery(1, 1, "", "name", "asc");
         actualResult = categoryGateway.findAll(query);
 
         assertEquals(expectedPage, actualResult.currentPage());
@@ -243,7 +243,7 @@ public class CategoryMySQLGatewayTest {
         // Page 2
         expectedPage = 2;
 
-        query = new CategorySearchQuery(2, 1, "", "name", "asc");
+        query = new SearchQuery(2, 1, "", "name", "asc");
         actualResult = categoryGateway.findAll(query);
 
         assertEquals(expectedPage, actualResult.currentPage());
@@ -273,7 +273,7 @@ public class CategoryMySQLGatewayTest {
 
         assertEquals(3, categoryRepository.count());
 
-        final var query = new CategorySearchQuery(0, 1, "doc", "name", "asc");
+        final var query = new SearchQuery(0, 1, "doc", "name", "asc");
         final var actualResult = categoryGateway.findAll(query);
 
         assertEquals(expectedPage, actualResult.currentPage());
@@ -303,7 +303,7 @@ public class CategoryMySQLGatewayTest {
 
         assertEquals(3, categoryRepository.count());
 
-        final var query = new CategorySearchQuery(0, 1, "MAIS ASSISTIDA", "name", "asc");
+        final var query = new SearchQuery(0, 1, "MAIS ASSISTIDA", "name", "asc");
         final var actualResult = categoryGateway.findAll(query);
 
         assertEquals(expectedPage, actualResult.currentPage());
@@ -311,5 +311,32 @@ public class CategoryMySQLGatewayTest {
         assertEquals(expectedTotal, actualResult.total());
         assertEquals(expectedPerPage, actualResult.items().size());
         assertEquals(filmes.getId(), actualResult.items().get(0).getId());
+    }
+
+    @Test
+    public void givenPrePersistedCategories_whenCallsExistsByIds_thenShouldReturnIds() {
+        final var filmes =
+            Category.newCategoryWith("Filmes", "A categoria mais assistida", true);
+        final var series =
+            Category.newCategoryWith("Séries", "Uma categoria assistida", true);
+        final var documentarios =
+            Category.newCategoryWith("Documentários", "A categoria menos assistida", true);
+
+        assertEquals(0, categoryRepository.count());
+
+        categoryRepository.saveAll(List.of(
+            CategoryJpaEntity.from(filmes),
+            CategoryJpaEntity.from(series),
+            CategoryJpaEntity.from(documentarios)
+        ));
+
+        assertEquals(3, categoryRepository.count());
+
+        final var expectedIds = List.of(filmes.getId(), series.getId());
+        final var ids = List.of(filmes.getId(), series.getId(), CategoryID.from("123"));
+
+        final var actualResult = categoryGateway.existsByIds(ids);
+
+        assertTrue(expectedIds.size() == actualResult.size() && expectedIds.containsAll(actualResult));
     }
 }
