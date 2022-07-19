@@ -8,7 +8,8 @@ import com.fullcycle.catalogo.admin.infrastructure.category.models.CreateCategor
 import com.fullcycle.catalogo.admin.infrastructure.category.models.UpdateCategoryRequest;
 import com.fullcycle.catalogo.admin.infrastructure.configuration.json.Json;
 import com.fullcycle.catalogo.admin.infrastructure.genre.models.CreateGenreRequest;
-import org.springframework.http.MediaType;
+import com.fullcycle.catalogo.admin.infrastructure.genre.models.GenreResponse;
+import com.fullcycle.catalogo.admin.infrastructure.genre.models.UpdateGenreRequest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.function.Function;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -41,12 +43,6 @@ public interface MockDsl {
         return delete("/categories/", anId);
     }
 
-    default GenreID givenAGenre(final String aName, final boolean isActive, final List<CategoryID> categories) throws Exception {
-        final var actualId =
-            given("/genres", new CreateGenreRequest(aName, mapTo(categories, CategoryID::getValue), isActive));
-        return GenreID.from(actualId);
-    }
-
     default ResultActions listCategories(final int page, final int perPage) throws Exception {
         return listCategories(page, perPage, "", "", "");
     }
@@ -65,7 +61,43 @@ public interface MockDsl {
         return list("/categories", page, perPage, search, sort, direction);
     }
 
-    private <T, R> List<T> mapTo(final List<R> src, final Function<R, T> mapper) {
+    default GenreID givenAGenre(final String aName, final boolean isActive, final List<CategoryID> categories) throws Exception {
+        final var actualId =
+            given("/genres", new CreateGenreRequest(aName, mapTo(categories, CategoryID::getValue), isActive));
+        return GenreID.from(actualId);
+    }
+
+    default GenreResponse retrieveAGenre(final Identifier anId) throws Exception {
+        return retrieve("/genres/", anId,  GenreResponse.class);
+    }
+
+    default ResultActions updateAGenre(final Identifier anId, final UpdateGenreRequest aRequest) throws Exception {
+        return update("/genres/", anId, aRequest);
+    }
+
+    default ResultActions deleteAGenre(final Identifier anId) throws Exception {
+        return delete("/genres/", anId);
+    }
+
+    default ResultActions listGenres(final int page, final int perPage) throws Exception {
+        return listGenres(page, perPage, "", "", "");
+    }
+
+    default ResultActions listGenres(final int page, final int perPage, final String search) throws Exception {
+        return listGenres(page, perPage, search, "", "");
+    }
+
+    default ResultActions listGenres(
+            final int page,
+            final int perPage,
+            final String search,
+            final String sort,
+            final String direction
+    ) throws Exception {
+        return list("/genres", page, perPage, search, sort, direction);
+    }
+
+    default <T, R> List<T> mapTo(final List<R> src, final Function<R, T> mapper) {
         return src.stream().map(mapper).toList();
     }
 
@@ -84,8 +116,8 @@ public interface MockDsl {
 
     private <T> T retrieve(final String url, final Identifier anId, final Class<T> clazz) throws Exception {
         final var aRequest = get(url + anId.getValue())
-                .accept(APPLICATION_JSON)
-                .contentType(APPLICATION_JSON);
+                .accept(APPLICATION_JSON_UTF8)
+                .contentType(APPLICATION_JSON_UTF8);
 
         final var json = mvc().perform(aRequest)
                 .andExpect(status().isOk())
