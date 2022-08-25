@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Tag(name = "Cast Members")
@@ -50,4 +51,13 @@ public interface CastMemberAPI {
         @ApiResponse(responseCode = "500", description = "An internal server error was thrown")
     })
     ResponseEntity<?> updateById(@PathVariable String id, @RequestBody UpdateCastMemberRequest aBody);
+
+    @DeleteMapping(value = "{id}")
+    @ResponseStatus(NO_CONTENT)
+    @Operation(summary = "Delete a cast member by it's identifier")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "204", description = "Cast member deleted"),
+        @ApiResponse(responseCode = "500", description = "An internal server error was thrown")
+    })
+    void deleteById(@PathVariable String id);
 }
