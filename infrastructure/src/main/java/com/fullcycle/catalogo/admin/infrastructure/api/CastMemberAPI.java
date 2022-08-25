@@ -1,5 +1,7 @@
 package com.fullcycle.catalogo.admin.infrastructure.api;
 
+import com.fullcycle.catalogo.admin.domain.pagination.Pagination;
+import com.fullcycle.catalogo.admin.infrastructure.castmember.models.CastMemberListResponse;
 import com.fullcycle.catalogo.admin.infrastructure.castmember.models.CastMemberResponse;
 import com.fullcycle.catalogo.admin.infrastructure.castmember.models.CreateCastMemberRequest;
 import com.fullcycle.catalogo.admin.infrastructure.castmember.models.UpdateCastMemberRequest;
@@ -28,6 +30,21 @@ public interface CastMemberAPI {
         @ApiResponse(responseCode = "500", description = "An internal server error was thrown")
     })
     ResponseEntity<?> create(@RequestBody CreateCastMemberRequest input);
+
+    @GetMapping
+    @Operation(summary = "List all cast members")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Cast members retrieved"),
+        @ApiResponse(responseCode = "400", description = "An invalid parameter was received"),
+        @ApiResponse(responseCode = "500", description = "An internal server error was thrown")
+    })
+    Pagination<CastMemberListResponse> list(
+        @RequestParam(name = "search", required = false, defaultValue = "") String search,
+        @RequestParam(name = "page", required = false, defaultValue = "0") int page,
+        @RequestParam(name = "perPage", required = false, defaultValue = "10") int perPage,
+        @RequestParam(name = "sort", required = false, defaultValue = "name") String sort,
+        @RequestParam(name = "dir", required = false, defaultValue = "asc") String direction
+    );
 
     @GetMapping(value = "{id}", produces = APPLICATION_JSON_VALUE)
     @Operation(summary = "Get a cast member by it's identifier")
