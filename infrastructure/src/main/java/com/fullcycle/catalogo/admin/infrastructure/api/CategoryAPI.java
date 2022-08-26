@@ -70,10 +70,7 @@ public interface CategoryAPI {
     })
     ResponseEntity<?> updateById(@PathVariable String id, @RequestBody UpdateCategoryRequest input);
 
-    @DeleteMapping(
-        value = "{id}",
-        produces = APPLICATION_JSON_VALUE
-    )
+    @DeleteMapping(value = "{id}")
     @ResponseStatus(NO_CONTENT)
     @Operation(summary = "Delete a category by it's identifier")
     @ApiResponses(value = {
