@@ -149,8 +149,4 @@ public class DefaultCreateVideoUseCase extends CreateVideoUseCase {
     private <T> Set<T> toIdentifier(final Set<String> ids, final Function<String, T> mapper) {
         return ids.stream().map(mapper).collect(Collectors.toSet());
     }
-
-    private Supplier<DomainException> invalidRating(final String rating) {
-        return () -> DomainException.with(new Error("Rating not found %s".formatted(rating)));
-    }
 }
