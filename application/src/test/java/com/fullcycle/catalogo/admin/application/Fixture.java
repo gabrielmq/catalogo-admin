@@ -4,10 +4,14 @@ import com.fullcycle.catalogo.admin.domain.castmember.CastMember;
 import com.fullcycle.catalogo.admin.domain.castmember.CastMemberType;
 import com.fullcycle.catalogo.admin.domain.category.Category;
 import com.fullcycle.catalogo.admin.domain.genre.Genre;
+import com.fullcycle.catalogo.admin.domain.video.Video;
 import com.fullcycle.catalogo.admin.domain.video.rating.Rating;
 import com.fullcycle.catalogo.admin.domain.video.media.resource.Resource;
 import com.fullcycle.catalogo.admin.domain.video.media.resource.Type;
 import com.github.javafaker.Faker;
+
+import java.time.Year;
+import java.util.Set;
 
 import static com.fullcycle.catalogo.admin.domain.castmember.CastMemberType.ACTOR;
 import static io.vavr.API.*;
@@ -67,6 +71,21 @@ public final class Fixture {
     }
 
     public static final class Videos {
+        public static Video newVideo() {
+            return Video.newVideo(
+                title(),
+                description(),
+                Year.of(year()),
+                duration(),
+                rating(),
+                bool(),
+                bool(),
+                Set.of(Categories.category().getId()),
+                Set.of(Genres.genre().getId()),
+                Set.of(CastMembers.member().getId())
+            );
+        }
+
         public static String description() {
             return FAKER.options().option("Description 1", "Description 2", "Description 3");
         }
