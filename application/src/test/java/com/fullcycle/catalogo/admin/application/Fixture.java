@@ -41,6 +41,21 @@ public final class Fixture {
         return FAKER.bool().bool();
     }
 
+    public static Video video() {
+        return Video.newVideo(
+            title(),
+            Videos.description(),
+            Year.of(year()),
+            duration(),
+            Videos.rating(),
+            bool(),
+            bool(),
+            Set.of(Categories.category().getId()),
+            Set.of(Genres.genre().getId()),
+            Set.of(CastMembers.member().getId())
+        );
+    }
+
     public static final class Categories {
         private static final Category CATEGORY =
             Category.newCategoryWith("Category", "Category description", true);
