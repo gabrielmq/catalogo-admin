@@ -113,7 +113,7 @@ public class DefaultUpdateVideoUseCase extends UpdateVideoUseCase {
             return videoGateway.update(aVideo);
         } catch (final Throwable throwable) {
             throw InternalErrorException.with(
-                "An error on create video was observed [videoId:%s]".formatted(anId.getValue()),
+                "An error on update video was observed [videoId:%s]".formatted(anId.getValue()),
                 throwable
             );
         }
