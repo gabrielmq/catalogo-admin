@@ -3,6 +3,7 @@ package com.fullcycle.catalogo.admin.application.video.retrieve.get;
 import com.fullcycle.catalogo.admin.application.Fixture;
 import com.fullcycle.catalogo.admin.application.UseCaseTest;
 import com.fullcycle.catalogo.admin.domain.exceptions.NotFoundException;
+import com.fullcycle.catalogo.admin.domain.utils.IDUtils;
 import com.fullcycle.catalogo.admin.domain.video.Video;
 import com.fullcycle.catalogo.admin.domain.video.VideoGateway;
 import com.fullcycle.catalogo.admin.domain.video.VideoID;
@@ -18,7 +19,6 @@ import java.time.Year;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -123,7 +123,7 @@ public class GetVideoByIdUseCaseTest extends UseCaseTest {
     }
 
     private AudioVideoMedia audioVideo(final Type type) {
-        final var checksum = UUID.randomUUID().toString();
+        final var checksum = IDUtils.uuid();
         return AudioVideoMedia.with(
             checksum,
             type.name(),
@@ -134,7 +134,7 @@ public class GetVideoByIdUseCaseTest extends UseCaseTest {
     }
 
     private ImageMedia imageMedia(final Type type) {
-        final var checksum = UUID.randomUUID().toString();
+        final var checksum = IDUtils.uuid();
         return ImageMedia.with(checksum, type.name(), "/videos/%s".formatted(checksum));
     }
 }

@@ -4,9 +4,7 @@ import com.fullcycle.catalogo.admin.domain.category.CategoryID;
 import com.fullcycle.catalogo.admin.infrastructure.video.persistence.VideoJpaEntity;
 
 import javax.persistence.*;
-
 import java.util.Objects;
-import java.util.UUID;
 
 import static javax.persistence.FetchType.LAZY;
 
@@ -31,7 +29,7 @@ public class VideoCategoryJpaEntity {
 
     public static VideoCategoryJpaEntity from(final VideoJpaEntity video, final CategoryID category) {
         return new VideoCategoryJpaEntity(
-            VideoCategoryID.from(video.getId(), UUID.fromString(category.getValue())),
+            VideoCategoryID.from(video.getId(), category.getValue()),
             video
         );
     }

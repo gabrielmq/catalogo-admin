@@ -8,9 +8,9 @@ import com.fullcycle.catalogo.admin.domain.category.CategoryGateway;
 import com.fullcycle.catalogo.admin.domain.category.CategoryID;
 import com.fullcycle.catalogo.admin.domain.exceptions.InternalErrorException;
 import com.fullcycle.catalogo.admin.domain.exceptions.NotificationException;
-import com.fullcycle.catalogo.admin.domain.genre.Genre;
 import com.fullcycle.catalogo.admin.domain.genre.GenreGateway;
 import com.fullcycle.catalogo.admin.domain.genre.GenreID;
+import com.fullcycle.catalogo.admin.domain.utils.IDUtils;
 import com.fullcycle.catalogo.admin.domain.video.VideoGateway;
 import com.fullcycle.catalogo.admin.domain.video.media.AudioVideoMedia;
 import com.fullcycle.catalogo.admin.domain.video.media.ImageMedia;
@@ -18,13 +18,15 @@ import com.fullcycle.catalogo.admin.domain.video.media.MediaStatus;
 import com.fullcycle.catalogo.admin.domain.video.media.resource.MediaResourceGateway;
 import com.fullcycle.catalogo.admin.domain.video.media.resource.Resource;
 import com.fullcycle.catalogo.admin.domain.video.media.resource.Type;
-import com.fullcycle.catalogo.admin.domain.video.rating.Rating;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import java.time.Year;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.AdditionalAnswers.returnsFirstArg;
@@ -953,7 +955,7 @@ public class CreateVideoUseCaseUseCaseTest extends UseCaseTest {
         when(resourceGateway.storeImage(any(), any()))
             .thenAnswer(answer -> {
                 final var resource = answer.getArgument(1, Resource.class);
-                return ImageMedia.with(UUID.randomUUID().toString(), resource.name(), "/img");
+                return ImageMedia.with(IDUtils.uuid(), resource.name(), "/img");
             });
     }
 
@@ -962,7 +964,7 @@ public class CreateVideoUseCaseUseCaseTest extends UseCaseTest {
             .thenAnswer(answer -> {
                 final var resource = answer.getArgument(1, Resource.class);
                 return AudioVideoMedia.with(
-                    UUID.randomUUID().toString(),
+                    IDUtils.uuid(),
                     resource.name(),
                     "/video",
                     "",

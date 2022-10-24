@@ -10,6 +10,7 @@ import com.fullcycle.catalogo.admin.domain.exceptions.InternalErrorException;
 import com.fullcycle.catalogo.admin.domain.exceptions.NotificationException;
 import com.fullcycle.catalogo.admin.domain.genre.GenreGateway;
 import com.fullcycle.catalogo.admin.domain.genre.GenreID;
+import com.fullcycle.catalogo.admin.domain.utils.IDUtils;
 import com.fullcycle.catalogo.admin.domain.video.Video;
 import com.fullcycle.catalogo.admin.domain.video.VideoGateway;
 import com.fullcycle.catalogo.admin.domain.video.media.AudioVideoMedia;
@@ -1030,7 +1031,7 @@ public class UpdateVideoUseCaseTest extends UseCaseTest {
     @Test
     public void givenAValidCommand_whenCallsUpdateVideoThrowsException_thenShouldCallClearResources() {
         // given
-        final var expectedErrorMessage = "An error on create video was observed [videoId:";
+        final var expectedErrorMessage = "An error on update video was observed [videoId:";
 
         final var aVideo = Fixture.Videos.newVideo();
 
@@ -1102,7 +1103,7 @@ public class UpdateVideoUseCaseTest extends UseCaseTest {
         when(resourceGateway.storeImage(any(), any()))
             .thenAnswer(answer -> {
                 final var resource = answer.getArgument(1, Resource.class);
-                return ImageMedia.with(UUID.randomUUID().toString(), resource.name(), "/img");
+                return ImageMedia.with(IDUtils.uuid(), resource.name(), "/img");
             });
     }
 
@@ -1111,7 +1112,7 @@ public class UpdateVideoUseCaseTest extends UseCaseTest {
             .thenAnswer(answer -> {
                 final var resource = answer.getArgument(1, Resource.class);
                 return AudioVideoMedia.with(
-                        UUID.randomUUID().toString(),
+                        IDUtils.uuid(),
                         resource.name(),
                         "/video",
                         "",

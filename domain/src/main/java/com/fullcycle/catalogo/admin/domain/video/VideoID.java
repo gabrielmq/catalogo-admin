@@ -1,10 +1,9 @@
 package com.fullcycle.catalogo.admin.domain.video;
 
 import com.fullcycle.catalogo.admin.domain.Identifier;
-import com.fullcycle.catalogo.admin.domain.castmember.CastMemberID;
+import com.fullcycle.catalogo.admin.domain.utils.IDUtils;
 
 import java.util.Objects;
-import java.util.UUID;
 
 public class VideoID extends Identifier {
     private final String value;
@@ -14,15 +13,11 @@ public class VideoID extends Identifier {
     }
 
     public static VideoID unique() {
-        return from(UUID.randomUUID());
+        return from(IDUtils.uuid());
     }
 
     public static VideoID from(final String anId) {
         return new VideoID(anId.toLowerCase());
-    }
-
-    public static VideoID from(final UUID anId) {
-        return from(anId.toString());
     }
 
     @Override
