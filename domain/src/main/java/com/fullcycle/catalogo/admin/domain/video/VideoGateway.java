@@ -10,5 +10,5 @@ public interface VideoGateway {
     Video update(Video aVideo);
     void deleteById(VideoID anId);
     Optional<Video> findById(VideoID anId);
-    Pagination<Video> findAll(VideoSearchQuery aQuery);
+    Pagination<VideoPreview> findAll(VideoSearchQuery aQuery);
 }

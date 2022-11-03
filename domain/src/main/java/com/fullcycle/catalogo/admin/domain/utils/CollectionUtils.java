@@ -1,12 +1,19 @@
 package com.fullcycle.catalogo.admin.domain.utils;
 
+import java.util.Objects;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public interface CollectionUtils {
+public final class CollectionUtils {
 
-    static <IN, OUT> Set<OUT> mapTo(final Set<IN> list, final Function<IN, OUT> mapper) {
-        return list.stream().map(mapper).collect(Collectors.toSet());
+    private CollectionUtils() {}
+
+    public static <IN, OUT> Set<OUT> mapTo(final Set<IN> list, final Function<IN, OUT> mapper) {
+        return Objects.nonNull(list) ? list.stream().map(mapper).collect(Collectors.toSet()) : null;
+    }
+
+    public static <T> Set<T> nullIfEmpty(final Set<T> values) {
+        return Objects.isNull(values) || values.isEmpty() ? null : values;
     }
 }
