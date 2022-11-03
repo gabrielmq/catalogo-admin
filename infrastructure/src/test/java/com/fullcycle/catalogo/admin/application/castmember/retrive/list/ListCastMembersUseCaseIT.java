@@ -1,6 +1,6 @@
 package com.fullcycle.catalogo.admin.application.castmember.retrive.list;
 
-import com.fullcycle.catalogo.admin.Fixture;
+import com.fullcycle.catalogo.admin.domain.Fixture;
 import com.fullcycle.catalogo.admin.IntegrationTest;
 import com.fullcycle.catalogo.admin.domain.castmember.CastMember;
 import com.fullcycle.catalogo.admin.domain.castmember.CastMemberGateway;
@@ -34,8 +34,8 @@ public class ListCastMembersUseCaseIT {
     public void givenAValidQuery_whenCallsListCastMembers_thenShouldReturnAll() {
         // given
         final var members = List.of(
-            CastMember.newMember(Fixture.name(), Fixture.CastMember.type()),
-            CastMember.newMember(Fixture.name(), Fixture.CastMember.type())
+            CastMember.newMember(Fixture.name(), Fixture.CastMembers.type()),
+            CastMember.newMember(Fixture.name(), Fixture.CastMembers.type())
         );
 
         castMemberRepository.saveAllAndFlush(

@@ -1,13 +1,13 @@
-package com.fullcycle.catalogo.admin.application;
+package com.fullcycle.catalogo.admin.domain;
 
 import com.fullcycle.catalogo.admin.domain.castmember.CastMember;
 import com.fullcycle.catalogo.admin.domain.castmember.CastMemberType;
 import com.fullcycle.catalogo.admin.domain.category.Category;
 import com.fullcycle.catalogo.admin.domain.genre.Genre;
 import com.fullcycle.catalogo.admin.domain.video.Video;
-import com.fullcycle.catalogo.admin.domain.video.rating.Rating;
 import com.fullcycle.catalogo.admin.domain.video.media.resource.Resource;
 import com.fullcycle.catalogo.admin.domain.video.media.resource.Type;
+import com.fullcycle.catalogo.admin.domain.video.rating.Rating;
 import com.github.javafaker.Faker;
 
 import java.time.Year;

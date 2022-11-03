@@ -1,6 +1,6 @@
 package com.fullcycle.catalogo.admin.infrastructure.castmember.models;
 
-import com.fullcycle.catalogo.admin.Fixture;
+import com.fullcycle.catalogo.admin.domain.Fixture;
 import com.fullcycle.catalogo.admin.JacksonTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ class CastMemberResponseTest {
     public void testMarshall() throws Exception {
         final var expectedId = "123";
         final var expectedName = Fixture.name();
-        final var expectedType = Fixture.CastMember.type();
+        final var expectedType = Fixture.CastMembers.type();
         final var expectedCreatedAt = Instant.now();
         final var expectedUpdatedAt = Instant.now();
 

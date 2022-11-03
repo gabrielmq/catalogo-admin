@@ -1,6 +1,6 @@
 package com.fullcycle.catalogo.admin.application.castmember.create;
 
-import com.fullcycle.catalogo.admin.Fixture;
+import com.fullcycle.catalogo.admin.domain.Fixture;
 import com.fullcycle.catalogo.admin.IntegrationTest;
 import com.fullcycle.catalogo.admin.domain.castmember.CastMemberGateway;
 import com.fullcycle.catalogo.admin.domain.castmember.CastMemberType;
@@ -36,7 +36,7 @@ public class CreateCastMemberUseCaseIT {
     public void givenAValidCommand_whenCallsCreateCastMember_thenShouldReturnIt() {
         // given
         final var expectedName = Fixture.name();
-        final var expectedType = Fixture.CastMember.type();
+        final var expectedType = Fixture.CastMembers.type();
 
         final var aCommand = CreateCastMemberCommand.with(expectedName, expectedType);
 
@@ -61,7 +61,7 @@ public class CreateCastMemberUseCaseIT {
     @Test
     public void givenAInvalidName_whenCallsCreateCastMember_thenShouldThrowsNotificationException() {
         final String expectedName = null;
-        final var expectedType = Fixture.CastMember.type();
+        final var expectedType = Fixture.CastMembers.type();
 
         final var expectedErrorCount = 1;
         final var expectedErrorMessage = "'name' should not be null";
