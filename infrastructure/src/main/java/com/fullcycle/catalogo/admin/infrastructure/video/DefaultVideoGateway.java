@@ -15,6 +15,7 @@ import com.fullcycle.catalogo.admin.infrastructure.video.persistence.VideoReposi
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Objects;
@@ -23,6 +24,7 @@ import java.util.Optional;
 import static com.fullcycle.catalogo.admin.domain.utils.CollectionUtils.mapTo;
 import static com.fullcycle.catalogo.admin.domain.utils.CollectionUtils.nullIfEmpty;
 
+@Component
 public class DefaultVideoGateway implements VideoGateway {
     private final VideoRepository repository;
 
