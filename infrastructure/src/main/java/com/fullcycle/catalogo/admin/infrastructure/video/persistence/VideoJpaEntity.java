@@ -22,7 +22,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static javax.persistence.CascadeType.ALL;
-import static javax.persistence.EnumType.STRING;
 import static javax.persistence.FetchType.EAGER;
 
 @Table(name = "videos")
@@ -48,7 +47,6 @@ public class VideoJpaEntity {
     @Column(name = "published", nullable = false)
     private boolean published;
 
-    @Enumerated(STRING)
     @Column(name = "rating")
     private Rating rating;
 
