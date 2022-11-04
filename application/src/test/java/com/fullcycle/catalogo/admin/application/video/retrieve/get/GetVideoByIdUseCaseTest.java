@@ -1,7 +1,7 @@
 package com.fullcycle.catalogo.admin.application.video.retrieve.get;
 
-import com.fullcycle.catalogo.admin.domain.Fixture;
 import com.fullcycle.catalogo.admin.application.UseCaseTest;
+import com.fullcycle.catalogo.admin.domain.Fixture;
 import com.fullcycle.catalogo.admin.domain.exceptions.NotFoundException;
 import com.fullcycle.catalogo.admin.domain.utils.IDUtils;
 import com.fullcycle.catalogo.admin.domain.video.Video;
@@ -9,7 +9,6 @@ import com.fullcycle.catalogo.admin.domain.video.VideoGateway;
 import com.fullcycle.catalogo.admin.domain.video.VideoID;
 import com.fullcycle.catalogo.admin.domain.video.media.AudioVideoMedia;
 import com.fullcycle.catalogo.admin.domain.video.media.ImageMedia;
-import com.fullcycle.catalogo.admin.domain.video.media.MediaStatus;
 import com.fullcycle.catalogo.admin.domain.video.media.resource.Type;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -127,9 +126,7 @@ public class GetVideoByIdUseCaseTest extends UseCaseTest {
         return AudioVideoMedia.with(
             checksum,
             type.name(),
-            "/videos/%s".formatted(checksum),
-            "",
-            MediaStatus.PENDING
+            "/videos/%s".formatted(checksum)
         );
     }
 

@@ -1,7 +1,7 @@
 package com.fullcycle.catalogo.admin.application.video.update;
 
-import com.fullcycle.catalogo.admin.domain.Fixture;
 import com.fullcycle.catalogo.admin.application.UseCaseTest;
+import com.fullcycle.catalogo.admin.domain.Fixture;
 import com.fullcycle.catalogo.admin.domain.castmember.CastMemberGateway;
 import com.fullcycle.catalogo.admin.domain.castmember.CastMemberID;
 import com.fullcycle.catalogo.admin.domain.category.CategoryGateway;
@@ -15,7 +15,6 @@ import com.fullcycle.catalogo.admin.domain.video.Video;
 import com.fullcycle.catalogo.admin.domain.video.VideoGateway;
 import com.fullcycle.catalogo.admin.domain.video.media.AudioVideoMedia;
 import com.fullcycle.catalogo.admin.domain.video.media.ImageMedia;
-import com.fullcycle.catalogo.admin.domain.video.media.MediaStatus;
 import com.fullcycle.catalogo.admin.domain.video.media.resource.MediaResourceGateway;
 import com.fullcycle.catalogo.admin.domain.video.media.resource.Resource;
 import com.fullcycle.catalogo.admin.domain.video.media.resource.Type;
@@ -1114,9 +1113,7 @@ public class UpdateVideoUseCaseTest extends UseCaseTest {
                 return AudioVideoMedia.with(
                         IDUtils.uuid(),
                         resource.name(),
-                        "/video",
-                        "",
-                        MediaStatus.PENDING
+                        "/video"
                 );
             });
     }
