@@ -10,6 +10,7 @@ CREATE TABLE videos_video_media (
 CREATE TABLE videos_image_media (
     id            CHAR(32)        NOT NULL PRIMARY KEY,
     name          VARCHAR(255)    NOT NULL,
+    checksum      VARCHAR(32)     NOT NULL,
     file_path     VARCHAR(500)    NOT NULL
 );
 

@@ -13,6 +13,9 @@ public class ImageMediaJpaEntity {
     @Id
     private String id;
 
+    @Column(name = "checksum", nullable = false)
+    private String checksum;
+
     @Column(name = "name", nullable = false)
     private String name;
 
@@ -24,16 +27,19 @@ public class ImageMediaJpaEntity {
 
     private ImageMediaJpaEntity(
         final String id,
+        final String checksum,
         final String name,
         final String filePath
     ) {
         this.id = id;
+        this.checksum = checksum;
         this.name = name;
         this.filePath = filePath;
     }
 
     public static ImageMediaJpaEntity from(final ImageMedia media) {
         return new ImageMediaJpaEntity(
+            media.id(),
             media.checksum(),
             media.name(),
             media.location()
@@ -41,7 +47,7 @@ public class ImageMediaJpaEntity {
     }
 
     public ImageMedia toDomain() {
-        return ImageMedia.with(id, name, filePath);
+        return ImageMedia.with(id, checksum, name, filePath);
     }
 
     public String getId() {
@@ -58,6 +64,14 @@ public class ImageMediaJpaEntity {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getChecksum() {
+        return checksum;
+    }
+
+    public void setChecksum(String checksum) {
+        this.checksum = checksum;
     }
 
     public String getFilePath() {

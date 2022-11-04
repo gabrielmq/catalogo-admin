@@ -6,7 +6,6 @@ import com.fullcycle.catalogo.admin.domain.genre.GenreID;
 import com.fullcycle.catalogo.admin.domain.validation.handler.ThrowsValidationHandler;
 import com.fullcycle.catalogo.admin.domain.video.media.AudioVideoMedia;
 import com.fullcycle.catalogo.admin.domain.video.media.ImageMedia;
-import com.fullcycle.catalogo.admin.domain.video.media.MediaStatus;
 import com.fullcycle.catalogo.admin.domain.video.rating.Rating;
 import org.junit.jupiter.api.Test;
 
@@ -175,9 +174,7 @@ public class VideoTest {
         final var aVideoMedia = AudioVideoMedia.with(
             "abc",
             "Video.mp4",
-            "/123/videos",
-            "",
-            MediaStatus.PENDING
+            "/123/videos"
         );
 
         // when
@@ -240,9 +237,7 @@ public class VideoTest {
         final var aTrailerMedia = AudioVideoMedia.with(
             "abc",
             "Trailer.mp4",
-            "/123/videos",
-            "",
-            MediaStatus.PENDING
+            "/123/videos"
         );
 
         // when
