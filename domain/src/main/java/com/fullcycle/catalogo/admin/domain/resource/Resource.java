@@ -1,4 +1,4 @@
-package com.fullcycle.catalogo.admin.domain.video.media.resource;
+package com.fullcycle.catalogo.admin.domain.resource;
 
 import com.fullcycle.catalogo.admin.domain.ValueObject;
 
@@ -7,18 +7,27 @@ import java.util.Objects;
 public class Resource extends ValueObject {
     private final byte[] content;
     private final String contentType;
+    private final String checksum;
     private final String name;
-    private final Type type;
 
-    private Resource(final byte[] content, final String contentType, final String name, final Type type) {
+    private Resource(
+        final String checksum,
+        byte[] content,
+        final String contentType,
+        final String name
+    ) {
+        this.checksum = Objects.requireNonNull(checksum);
         this.content = Objects.requireNonNull(content);
         this.contentType = Objects.requireNonNull(contentType);
         this.name = Objects.requireNonNull(name);
-        this.type = Objects.requireNonNull(type);
     }
 
-    public static Resource of(final byte[] content, final String contentType, final String name, final Type type) {
-        return new Resource(content, contentType, name, type);
+    public static Resource of(final String checksum, final byte[] content, final String contentType, final String name) {
+        return new Resource(checksum, content, contentType, name);
+    }
+
+    public String checksum() {
+        return checksum;
     }
 
     public byte[] content() {
@@ -31,9 +40,5 @@ public class Resource extends ValueObject {
 
     public String name() {
         return name;
-    }
-
-    public Type type() {
-        return type;
     }
 }

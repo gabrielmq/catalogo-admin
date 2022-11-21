@@ -7,9 +7,9 @@ import com.fullcycle.catalogo.admin.domain.utils.IDUtils;
 import com.fullcycle.catalogo.admin.domain.video.Video;
 import com.fullcycle.catalogo.admin.domain.video.VideoGateway;
 import com.fullcycle.catalogo.admin.domain.video.VideoID;
+import com.fullcycle.catalogo.admin.domain.video.VideoMediaType;
 import com.fullcycle.catalogo.admin.domain.video.media.AudioVideoMedia;
 import com.fullcycle.catalogo.admin.domain.video.media.ImageMedia;
-import com.fullcycle.catalogo.admin.domain.video.media.resource.Type;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -50,11 +50,11 @@ public class GetVideoByIdUseCaseTest extends UseCaseTest {
         final var expectedCategories = Set.of(Fixture.Categories.category().getId());
         final var expectedGenres = Set.of(Fixture.Genres.genre().getId());
         final var expectedMembers = Set.of(Fixture.CastMembers.member().getId());
-        final var expectedVideo = audioVideo(Type.VIDEO);
-        final var expectedTrailer = audioVideo(Type.TRAILER);
-        final var expectedBanner = imageMedia(Type.BANNER);
-        final var expectedThumb = imageMedia(Type.THUMBNAIL);
-        final var expectedThumbHalf = imageMedia(Type.THUMBNAIL_HALF);
+        final var expectedVideo = audioVideo(VideoMediaType.VIDEO);
+        final var expectedTrailer = audioVideo(VideoMediaType.TRAILER);
+        final var expectedBanner = imageMedia(VideoMediaType.BANNER);
+        final var expectedThumb = imageMedia(VideoMediaType.THUMBNAIL);
+        final var expectedThumbHalf = imageMedia(VideoMediaType.THUMBNAIL_HALF);
 
         final var aVideo = Video.newVideo(
             expectedTitle,
@@ -121,7 +121,7 @@ public class GetVideoByIdUseCaseTest extends UseCaseTest {
         assertEquals(expectedErrorMessage, actualException.getMessage());
     }
 
-    private AudioVideoMedia audioVideo(final Type type) {
+    private AudioVideoMedia audioVideo(final VideoMediaType type) {
         final var checksum = IDUtils.uuid();
         return AudioVideoMedia.with(
             checksum,
@@ -130,7 +130,7 @@ public class GetVideoByIdUseCaseTest extends UseCaseTest {
         );
     }
 
-    private ImageMedia imageMedia(final Type type) {
+    private ImageMedia imageMedia(final VideoMediaType type) {
         final var checksum = IDUtils.uuid();
         return ImageMedia.with(checksum, type.name(), "/videos/%s".formatted(checksum));
     }
