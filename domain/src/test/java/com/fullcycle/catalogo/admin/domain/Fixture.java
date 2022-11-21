@@ -60,6 +60,20 @@ public final class Fixture {
         private static final Category CATEGORY =
             Category.newCategoryWith("Category", "Category description", true);
 
+        private static final Category AULAS =
+            Category.newCategoryWith("Aulas", "Some description", true);
+
+        private static final Category LIVES =
+            Category.newCategoryWith("Lives", "Some description", true);
+
+        public static Category aulas() {
+            return AULAS.clone();
+        }
+
+        public static Category lives() {
+            return LIVES.clone();
+        }
+
         public static Category category() {
             return CATEGORY.clone();
         }
@@ -68,13 +82,27 @@ public final class Fixture {
     public static final class Genres {
         private static final Genre GENRE = Genre.newGenreWith("Genre", true);
 
+        private static final Genre TECH = Genre.newGenreWith("Technology", true);
+
+        private static final Genre BUSINESS = Genre.newGenreWith("Business", true);
+
         public static Genre genre() {
             return Genre.with(GENRE);
+        }
+
+        public static Genre tech() {
+            return Genre.with(TECH);
+        }
+
+        public static Genre business() {
+            return Genre.with(BUSINESS);
         }
     }
 
     public static final class CastMembers {
         private static final CastMember MEMBER = CastMember.newMember("Member", ACTOR);
+
+        private static final CastMember JOHN_DOE = CastMember.newMember("John Doe", ACTOR);
 
         public static CastMemberType type() {
             return FAKER.options().option(CastMemberType.values());
@@ -82,6 +110,10 @@ public final class Fixture {
 
         public static CastMember member() {
             return CastMember.with(MEMBER);
+        }
+
+        public static CastMember johnDoe() {
+            return CastMember.with(JOHN_DOE);
         }
     }
 

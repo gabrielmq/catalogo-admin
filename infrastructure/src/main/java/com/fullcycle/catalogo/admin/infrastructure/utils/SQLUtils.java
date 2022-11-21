@@ -6,7 +6,11 @@ public final class SQLUtils {
 
     private SQLUtils() {}
 
-    public static String like(String term) {
+    public static String like(final String term) {
         return Objects.nonNull(term) ? "%" + term + "%" : null;
+    }
+
+    public static String upper(final String term) {
+        return Objects.nonNull(term) ? term.toUpperCase() : null;
     }
 }
