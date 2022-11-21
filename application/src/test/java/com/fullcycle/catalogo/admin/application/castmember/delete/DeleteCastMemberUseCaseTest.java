@@ -1,26 +1,18 @@
 package com.fullcycle.catalogo.admin.application.castmember.delete;
 
-import com.fullcycle.catalogo.admin.application.Fixture;
+import com.fullcycle.catalogo.admin.domain.Fixture;
 import com.fullcycle.catalogo.admin.application.UseCaseTest;
-import com.fullcycle.catalogo.admin.application.castmember.update.UpdateCastMemberCommand;
 import com.fullcycle.catalogo.admin.domain.castmember.CastMember;
 import com.fullcycle.catalogo.admin.domain.castmember.CastMemberGateway;
 import com.fullcycle.catalogo.admin.domain.castmember.CastMemberID;
-import com.fullcycle.catalogo.admin.domain.castmember.CastMemberType;
-import com.fullcycle.catalogo.admin.domain.exceptions.NotFoundException;
-import com.fullcycle.catalogo.admin.domain.exceptions.NotificationException;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.AdditionalAnswers.returnsFirstArg;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.*;
 
 public class DeleteCastMemberUseCaseTest extends UseCaseTest {
@@ -38,7 +30,7 @@ public class DeleteCastMemberUseCaseTest extends UseCaseTest {
 
     @Test
     public void givenAValidId_whenCallsDeleteCastMember_thenShouldDeleteIt() {
-        final var aMember = CastMember.newMember(Fixture.name(), Fixture.CastMember.type());
+        final var aMember = CastMember.newMember(Fixture.name(), Fixture.CastMembers.type());
 
         final var expectedId = aMember.getId();
 
@@ -57,7 +49,7 @@ public class DeleteCastMemberUseCaseTest extends UseCaseTest {
 
     @Test
     public void givenAValidId_whenCallsDeleteCastMemberAndGatewayThrowsException_thenShouldReceiveException() {
-        final var aMember = CastMember.newMember(Fixture.name(), Fixture.CastMember.type());
+        final var aMember = CastMember.newMember(Fixture.name(), Fixture.CastMembers.type());
 
         final var expectedId = aMember.getId();
 

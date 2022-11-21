@@ -1,9 +1,9 @@
 package com.fullcycle.catalogo.admin.domain.castmember;
 
 import com.fullcycle.catalogo.admin.domain.Identifier;
+import com.fullcycle.catalogo.admin.domain.utils.IDUtils;
 
 import java.util.Objects;
-import java.util.UUID;
 
 public class CastMemberID extends Identifier {
     private final String value;
@@ -13,15 +13,11 @@ public class CastMemberID extends Identifier {
     }
 
     public static CastMemberID unique() {
-        return from(UUID.randomUUID());
+        return from(IDUtils.uuid());
     }
 
     public static CastMemberID from(final String anId) {
         return new CastMemberID(anId);
-    }
-
-    public static CastMemberID from(final UUID anId) {
-        return from(anId.toString().toLowerCase());
     }
 
     @Override

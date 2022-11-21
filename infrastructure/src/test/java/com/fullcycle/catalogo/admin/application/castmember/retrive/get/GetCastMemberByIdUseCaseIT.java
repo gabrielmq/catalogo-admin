@@ -1,6 +1,6 @@
 package com.fullcycle.catalogo.admin.application.castmember.retrive.get;
 
-import com.fullcycle.catalogo.admin.Fixture;
+import com.fullcycle.catalogo.admin.domain.Fixture;
 import com.fullcycle.catalogo.admin.IntegrationTest;
 import com.fullcycle.catalogo.admin.domain.castmember.CastMember;
 import com.fullcycle.catalogo.admin.domain.castmember.CastMemberGateway;
@@ -35,7 +35,7 @@ public class GetCastMemberByIdUseCaseIT {
     public void givenAValidId_whenCallsGetCastMemberById_thenShouldReturnIt() {
         // given
         final var expectedName = Fixture.name();
-        final var expectedType = Fixture.CastMember.type();
+        final var expectedType = Fixture.CastMembers.type();
 
         final var aMember = CastMember.newMember(expectedName, expectedType);
 

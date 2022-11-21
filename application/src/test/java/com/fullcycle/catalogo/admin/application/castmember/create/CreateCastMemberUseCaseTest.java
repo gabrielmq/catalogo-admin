@@ -1,15 +1,13 @@
 package com.fullcycle.catalogo.admin.application.castmember.create;
 
-import com.fullcycle.catalogo.admin.application.Fixture;
+import com.fullcycle.catalogo.admin.domain.Fixture;
 import com.fullcycle.catalogo.admin.application.UseCaseTest;
 import com.fullcycle.catalogo.admin.domain.castmember.CastMemberGateway;
 import com.fullcycle.catalogo.admin.domain.castmember.CastMemberType;
 import com.fullcycle.catalogo.admin.domain.exceptions.NotificationException;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 
 import java.util.List;
 import java.util.Objects;
@@ -36,7 +34,7 @@ public class CreateCastMemberUseCaseTest extends UseCaseTest {
     @Test
     public void givenAValidCommand_whenCallsCreateCastMember_thenShouldReturnIt() {
         final var expectedName = Fixture.name();
-        final var expectedType = Fixture.CastMember.type();
+        final var expectedType = Fixture.CastMembers.type();
 
         final var aCommand = CreateCastMemberCommand.with(expectedName, expectedType);
 
@@ -60,7 +58,7 @@ public class CreateCastMemberUseCaseTest extends UseCaseTest {
     @Test
     public void givenAInvalidName_whenCallsCreateCastMember_thenShouldThrowsNotificationException() {
         final String expectedName = null;
-        final var expectedType = Fixture.CastMember.type();
+        final var expectedType = Fixture.CastMembers.type();
 
         final var expectedErrorCount = 1;
         final var expectedErrorMessage = "'name' should not be null";

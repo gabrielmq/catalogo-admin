@@ -1,6 +1,6 @@
 package com.fullcycle.catalogo.admin.application.castmember.delete;
 
-import com.fullcycle.catalogo.admin.Fixture;
+import com.fullcycle.catalogo.admin.domain.Fixture;
 import com.fullcycle.catalogo.admin.IntegrationTest;
 import com.fullcycle.catalogo.admin.domain.castmember.CastMember;
 import com.fullcycle.catalogo.admin.domain.castmember.CastMemberGateway;
@@ -30,7 +30,7 @@ public class DeleteCastMemberUseCaseIT {
     @Test
     public void givenAValidId_whenCallsDeleteCastMember_thenShouldDeleteIt() {
         // given
-        final var aMember = CastMember.newMember(Fixture.name(), Fixture.CastMember.type());
+        final var aMember = CastMember.newMember(Fixture.name(), Fixture.CastMembers.type());
 
         final var expectedId = aMember.getId();
 
@@ -51,7 +51,7 @@ public class DeleteCastMemberUseCaseIT {
     @Test
     public void givenAnInvalidId_whenCallsDeleteCastMember_thenShouldBeOk() {
         // given
-        final var aMember = CastMember.newMember(Fixture.name(), Fixture.CastMember.type());
+        final var aMember = CastMember.newMember(Fixture.name(), Fixture.CastMembers.type());
 
         castMemberRepository.saveAndFlush(CastMemberJpaEntity.from(aMember));
 
@@ -71,7 +71,7 @@ public class DeleteCastMemberUseCaseIT {
     @Test
     public void givenAValidId_whenCallsDeleteCastMemberAndGatewayThrowsException_thenShouldReceiveException() {
         // given
-        final var aMember = CastMember.newMember(Fixture.name(), Fixture.CastMember.type());
+        final var aMember = CastMember.newMember(Fixture.name(), Fixture.CastMembers.type());
 
         final var expectedId = aMember.getId();
 
