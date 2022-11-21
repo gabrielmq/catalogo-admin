@@ -35,6 +35,9 @@ dependencies {
     implementation('com.fasterxml.jackson.module:jackson-module-afterburner')
     implementation('mysql:mysql-connector-java')
 
+    implementation('com.google.cloud:google-cloud-storage:2.15.0')
+    implementation('com.google.guava:guava:31.1-jre')
+
     implementation('org.springframework.boot:spring-boot-starter-web') {
         exclude module: 'spring-boot-starter-tomcat'
     }
