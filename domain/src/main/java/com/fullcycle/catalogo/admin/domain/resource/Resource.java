@@ -2,6 +2,7 @@ package com.fullcycle.catalogo.admin.domain.resource;
 
 import com.fullcycle.catalogo.admin.domain.ValueObject;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 public class Resource extends ValueObject {
@@ -40,5 +41,23 @@ public class Resource extends ValueObject {
 
     public String name() {
         return name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Resource resource = (Resource) o;
+        return Arrays.equals(content, resource.content) &&
+                Objects.equals(contentType, resource.contentType) &&
+                Objects.equals(checksum, resource.checksum) &&
+                Objects.equals(name, resource.name);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(contentType, checksum, name);
+        result = 31 * result + Arrays.hashCode(content);
+        return result;
     }
 }
