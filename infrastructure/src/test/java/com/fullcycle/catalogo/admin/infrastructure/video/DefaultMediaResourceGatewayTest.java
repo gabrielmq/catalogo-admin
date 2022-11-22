@@ -125,6 +125,55 @@ public class DefaultMediaResourceGatewayTest {
         );
     }
 
+    @Test
+    public void givenValidVideoId_whenCallsGetResources_thenShouldReturnIt() {
+        // given
+        final var videoOne = VideoID.unique();
+        final var expectedType = VideoMediaType.VIDEO;
+        final var expectedResource = resource(expectedType);
+
+        storageService()
+            .store("videoId-%s/type-%s".formatted(videoOne.getValue(), VideoMediaType.VIDEO.name()), expectedResource);
+
+        storageService()
+            .store("videoId-%s/type-%s".formatted(videoOne.getValue(), VideoMediaType.TRAILER.name()), resource(mediaType()));
+
+        storageService()
+            .store("videoId-%s/type-%s".formatted(videoOne.getValue(), VideoMediaType.BANNER.name()), resource(mediaType()));
+
+        assertEquals(3, storageService().getStorage().size());
+
+        // when
+        final var actualResult = this.gateway.getResource(videoOne, expectedType).get();
+
+        // then
+        assertEquals(expectedResource, actualResult);
+    }
+
+    @Test
+    public void givenInvalidType_whenCallsGetResources_thenShouldReturnEmpty() {
+        // given
+        final var videoOne = VideoID.unique();
+        final var expectedType = VideoMediaType.THUMBNAIL;
+
+        storageService()
+            .store("videoId-%s/type-%s".formatted(videoOne.getValue(), VideoMediaType.VIDEO.name()), resource(mediaType()));
+
+        storageService()
+            .store("videoId-%s/type-%s".formatted(videoOne.getValue(), VideoMediaType.TRAILER.name()), resource(mediaType()));
+
+        storageService()
+            .store("videoId-%s/type-%s".formatted(videoOne.getValue(), VideoMediaType.BANNER.name()), resource(mediaType()));
+
+        assertEquals(3, storageService().getStorage().size());
+
+        // when
+        final var actualResult = this.gateway.getResource(videoOne, expectedType);
+
+        // then
+        assertTrue(actualResult.isEmpty());
+    }
+
     private InMemoryStorageService storageService() {
         return (InMemoryStorageService) storageService;
     }
