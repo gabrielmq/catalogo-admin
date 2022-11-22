@@ -47,7 +47,7 @@ gcloud:
   credentials: ${GCLOUD_CREDENTIALS}
   project-id: ${GCLOUD_PROJECT_ID}
   storage:
-    catalogo-video:
+    catalogo-videos:
       bucket: bucket
       connect-timeout: 1000
       read-timeout: 2000
@@ -55,3 +55,8 @@ gcloud:
       retry-delay: 50
       retry-max-delay: 50
       retry-multiplier: 1.0
+
+storage:
+  catalogo-videos:
+    filename-pattern: type-{type}
+    location-pattern: videoId-{videoId}
