@@ -1,6 +1,6 @@
 package com.fullcycle.catalogo.admin.application.video.update;
 
-import com.fullcycle.catalogo.admin.domain.video.media.resource.Resource;
+import com.fullcycle.catalogo.admin.domain.resource.Resource;
 
 import java.util.Optional;
 import java.util.Set;

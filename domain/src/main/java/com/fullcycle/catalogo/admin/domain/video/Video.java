@@ -14,6 +14,9 @@ import java.time.Instant;
 import java.time.Year;
 import java.util.*;
 
+import static com.fullcycle.catalogo.admin.domain.video.VideoMediaType.*;
+import static com.fullcycle.catalogo.admin.domain.video.VideoMediaType.TRAILER;
+
 public class Video extends AggregateRoot<VideoID> {
     private String title;
     private String description;
@@ -207,6 +210,24 @@ public class Video extends AggregateRoot<VideoID> {
         this.setGenres(genres);
         this.setMembers(members);
         this.updatedAt = InstantUtils.now();
+        return this;
+    }
+
+    public Video processing(final VideoMediaType aType) {
+        if (VIDEO == aType) {
+            getVideo().ifPresent(video -> setVideo(video.processing()));
+        } else if (TRAILER == aType) {
+            getTrailer().ifPresent(trailer -> setTrailer(trailer.processing()));
+        }
+        return this;
+    }
+
+    public Video completed(final VideoMediaType aType, final String encodedPath) {
+        if (VIDEO == aType) {
+            getVideo().ifPresent(video -> setVideo(video.completed(encodedPath)));
+        } else if (TRAILER == aType) {
+            getTrailer().ifPresent(trailer -> setTrailer(trailer.completed(encodedPath)));
+        }
         return this;
     }
 

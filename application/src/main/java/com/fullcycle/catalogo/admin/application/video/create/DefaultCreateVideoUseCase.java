@@ -5,7 +5,6 @@ import com.fullcycle.catalogo.admin.domain.castmember.CastMemberGateway;
 import com.fullcycle.catalogo.admin.domain.castmember.CastMemberID;
 import com.fullcycle.catalogo.admin.domain.category.CategoryGateway;
 import com.fullcycle.catalogo.admin.domain.category.CategoryID;
-import com.fullcycle.catalogo.admin.domain.exceptions.DomainException;
 import com.fullcycle.catalogo.admin.domain.exceptions.InternalErrorException;
 import com.fullcycle.catalogo.admin.domain.exceptions.NotificationException;
 import com.fullcycle.catalogo.admin.domain.genre.GenreGateway;
@@ -13,17 +12,15 @@ import com.fullcycle.catalogo.admin.domain.genre.GenreID;
 import com.fullcycle.catalogo.admin.domain.validation.Error;
 import com.fullcycle.catalogo.admin.domain.validation.ValidationHandler;
 import com.fullcycle.catalogo.admin.domain.validation.handler.Notification;
-import com.fullcycle.catalogo.admin.domain.video.Video;
-import com.fullcycle.catalogo.admin.domain.video.VideoGateway;
-import com.fullcycle.catalogo.admin.domain.video.media.resource.MediaResourceGateway;
+import com.fullcycle.catalogo.admin.domain.video.*;
 import com.fullcycle.catalogo.admin.domain.video.rating.Rating;
 
 import java.time.Year;
 import java.util.*;
 import java.util.function.Function;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+import static com.fullcycle.catalogo.admin.domain.video.VideoMediaType.*;
 import static java.util.stream.Collectors.joining;
 
 public class DefaultCreateVideoUseCase extends CreateVideoUseCase {
@@ -86,19 +83,34 @@ public class DefaultCreateVideoUseCase extends CreateVideoUseCase {
 
         try {
             aCommand.getVideo()
-                .ifPresent(video -> aVideo.setVideo(resourceGateway.storeAudioVideo(anId, video)));
+                .ifPresent(video -> {
+                    final var videoResource = VideoResource.of(video, VideoMediaType.VIDEO);
+                    aVideo.setVideo(resourceGateway.storeAudioVideo(anId, videoResource));
+                });
 
             aCommand.getTrailer()
-                .ifPresent(trailer -> aVideo.setTrailer(resourceGateway.storeAudioVideo(anId, trailer)));
+                .ifPresent(trailer -> {
+                    final var videoResource = VideoResource.of(trailer, TRAILER);
+                    aVideo.setTrailer(resourceGateway.storeAudioVideo(anId, videoResource));
+                });
 
             aCommand.getBanner()
-                .ifPresent(banner -> aVideo.setBanner(resourceGateway.storeImage(anId, banner)));
+                .ifPresent(banner -> {
+                    final var videoResource = VideoResource.of(banner, BANNER);
+                    aVideo.setBanner(resourceGateway.storeImage(anId, videoResource));
+                });
 
             aCommand.getThumbnail()
-                .ifPresent(thumb -> aVideo.setThumbnail(resourceGateway.storeImage(anId, thumb)));
+                .ifPresent(thumb -> {
+                    final var videoResource = VideoResource.of(thumb, THUMBNAIL);
+                    aVideo.setThumbnail(resourceGateway.storeImage(anId, videoResource));
+                });
 
             aCommand.getThumbnailHalf()
-                .ifPresent(thumbHalf -> aVideo.setThumbnailHalf(resourceGateway.storeImage(anId, thumbHalf)));
+                .ifPresent(thumbHalf -> {
+                    final var videoResource = VideoResource.of(thumbHalf, THUMBNAIL_HALF);
+                    aVideo.setThumbnailHalf(resourceGateway.storeImage(anId, videoResource));
+                });
 
             return videoGateway.create(aVideo);
         } catch (final Throwable throwable) {
