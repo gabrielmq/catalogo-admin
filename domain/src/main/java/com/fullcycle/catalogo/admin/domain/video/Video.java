@@ -3,6 +3,7 @@ package com.fullcycle.catalogo.admin.domain.video;
 import com.fullcycle.catalogo.admin.domain.AggregateRoot;
 import com.fullcycle.catalogo.admin.domain.castmember.CastMemberID;
 import com.fullcycle.catalogo.admin.domain.category.CategoryID;
+import com.fullcycle.catalogo.admin.domain.event.DomainEvent;
 import com.fullcycle.catalogo.admin.domain.genre.GenreID;
 import com.fullcycle.catalogo.admin.domain.utils.InstantUtils;
 import com.fullcycle.catalogo.admin.domain.validation.ValidationHandler;
@@ -59,9 +60,10 @@ public class Video extends AggregateRoot<VideoID> {
         final AudioVideoMedia aVideo,
         final Set<CategoryID> categories,
         final Set<GenreID> genres,
-        final Set<CastMemberID> members
+        final Set<CastMemberID> members,
+        final List<DomainEvent> events
     ) {
-        super(anId);
+        super(anId, events);
         this.title = aTitle;
         this.description = aDescription;
         this.launchedAt = aLaunchedAt;
@@ -118,7 +120,8 @@ public class Video extends AggregateRoot<VideoID> {
             null,
             categories,
             genres,
-            members
+            members,
+            null
         );
     }
 
@@ -141,7 +144,8 @@ public class Video extends AggregateRoot<VideoID> {
             aVideo.getVideo().orElse(null),
             new HashSet<>(aVideo.categories),
             new HashSet<>(aVideo.genres),
-            new HashSet<>(aVideo.castMembers)
+            new HashSet<>(aVideo.castMembers),
+            aVideo.getEvents()
         );
     }
 
@@ -183,7 +187,8 @@ public class Video extends AggregateRoot<VideoID> {
             aVideo,
             new HashSet<>(categories),
             new HashSet<>(genres),
-            new HashSet<>(members)
+            new HashSet<>(members),
+            null
         );
     }
 
