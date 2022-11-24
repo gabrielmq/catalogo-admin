@@ -14,7 +14,7 @@ server:
 
 spring:
   lifecycle:
-    timeout-per-shutdown-phase: 500ms
+    timeout-per-shutdown-phase: 10s
   datasource:
     url: jdbc:mysql://${mysql.url}/${mysql.schema}?useSSL=true&serverTimezone=UTC&characterEncoding=UTF-8
     username: ${mysql.username}
