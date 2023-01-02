@@ -145,7 +145,7 @@ public class Video extends AggregateRoot<VideoID> {
             new HashSet<>(aVideo.categories),
             new HashSet<>(aVideo.genres),
             new HashSet<>(aVideo.castMembers),
-            aVideo.getEvents()
+            aVideo.getDomainEvents()
         );
     }
 

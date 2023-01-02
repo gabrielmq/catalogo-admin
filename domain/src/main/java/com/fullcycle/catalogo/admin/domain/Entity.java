@@ -24,13 +24,13 @@ public abstract class Entity<ID extends Identifier> {
         return id;
     }
 
-    public List<DomainEvent> getEvents() {
+    public List<DomainEvent> getDomainEvents() {
         return Collections.unmodifiableList(events);
     }
 
-    public void publishDomainEvents(final DomainEventPublisher publisher) {
+    public void publishDomainEvents(final DomainEventPublisher<DomainEvent> publisher) {
         if (Objects.nonNull(publisher)) {
-            getEvents().forEach(publisher::publish);
+            getDomainEvents().forEach(publisher::publish);
             events.clear();
         }
     }
