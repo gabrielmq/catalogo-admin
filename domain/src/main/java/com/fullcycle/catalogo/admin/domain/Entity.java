@@ -28,7 +28,7 @@ public abstract class Entity<ID extends Identifier> {
         return Collections.unmodifiableList(events);
     }
 
-    public void publishDomainEvents(final DomainEventPublisher<DomainEvent> publisher) {
+    public void publishDomainEvents(final DomainEventPublisher publisher) {
         if (Objects.nonNull(publisher)) {
             getDomainEvents().forEach(publisher::publish);
             events.clear();

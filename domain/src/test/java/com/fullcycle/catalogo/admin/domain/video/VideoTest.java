@@ -3,6 +3,8 @@ package com.fullcycle.catalogo.admin.domain.video;
 import com.fullcycle.catalogo.admin.domain.castmember.CastMemberID;
 import com.fullcycle.catalogo.admin.domain.category.CategoryID;
 import com.fullcycle.catalogo.admin.domain.genre.GenreID;
+import com.fullcycle.catalogo.admin.domain.utils.IDUtils;
+import com.fullcycle.catalogo.admin.domain.utils.InstantUtils;
 import com.fullcycle.catalogo.admin.domain.validation.handler.ThrowsValidationHandler;
 import com.fullcycle.catalogo.admin.domain.video.media.AudioVideoMedia;
 import com.fullcycle.catalogo.admin.domain.video.media.ImageMedia;
@@ -68,6 +70,7 @@ public class VideoTest {
         assertTrue(actualVideo.getBanner().isEmpty());
         assertTrue(actualVideo.getThumbnail().isEmpty());
         assertTrue(actualVideo.getThumbnailHalf().isEmpty());
+        assertTrue(actualVideo.getDomainEvents().isEmpty());
 
         assertDoesNotThrow(() -> actualVideo.validate(new ThrowsValidationHandler()));
     }
@@ -84,6 +87,8 @@ public class VideoTest {
         final var expectedCategories = Set.of(CategoryID.unique());
         final var expectedGenres = Set.of(GenreID.unique());
         final var expectedMembers = Set.of(CastMemberID.unique());
+        final var expectedEvent = new VideoMediaCreated("ID", "file");
+        final var expectedEventCount = 1;
         final var expectedDescription = """
             O cuidado em identificar pontos críticos na consolidação das estruturas faz parte de um processo de gerenciamento dos índices pretendidos.
             Do mesmo modo, a complexidade dos estudos efetuados garante a contribuição de um grupo importante na determinação do fluxo de informações.
@@ -101,6 +106,8 @@ public class VideoTest {
             Set.of(),
             Set.of()
         );
+
+        aVideo.registerEvent(expectedEvent);
 
         // when
         final var actualVideo = Video.with(aVideo)
@@ -137,6 +144,8 @@ public class VideoTest {
         assertTrue(actualVideo.getBanner().isEmpty());
         assertTrue(actualVideo.getThumbnail().isEmpty());
         assertTrue(actualVideo.getThumbnailHalf().isEmpty());
+        assertEquals(expectedEventCount, actualVideo.getDomainEvents().size());
+        assertEquals(expectedEvent, actualVideo.getDomainEvents().get(0));
 
         assertDoesNotThrow(() -> aVideo.validate(new ThrowsValidationHandler()));
     }
@@ -454,5 +463,49 @@ public class VideoTest {
         assertTrue(actualVideo.getThumbnail().isEmpty());
 
         assertDoesNotThrow(() -> aVideo.validate(new ThrowsValidationHandler()));
+    }
+
+    @Test
+    public void givenValidVideo_whenCallsWith_thenShouldCreateWithoutEvents() {
+        // given
+        final var expectedId = VideoID.from(IDUtils.uuid());
+        final var expectedTitle = "System Design Interviews";
+        final var expectedLaunchedAt = Year.of(2022);
+        final var expectedDuration = 120.0;
+        final var expectedOpened = false;
+        final var published = false;
+        final var expectedRating = Rating.L;
+        final var expectedCategories = Set.of(CategoryID.unique());
+        final var expectedGenres = Set.of(GenreID.unique());
+        final var expectedMembers = Set.of(CastMemberID.unique());
+        final var expectedDescription = """
+            O cuidado em identificar pontos críticos na consolidação das estruturas faz parte de um processo de gerenciamento dos índices pretendidos.
+            Do mesmo modo, a complexidade dos estudos efetuados garante a contribuição de um grupo importante na determinação do fluxo de informações.
+        """;
+
+        // when
+        final var actualVideo = Video.with(
+            expectedId,
+            expectedTitle,
+            expectedDescription,
+            expectedLaunchedAt,
+            expectedDuration,
+            expectedRating,
+            expectedOpened,
+            published,
+            InstantUtils.now(),
+            InstantUtils.now(),
+            null,
+            null,
+            null,
+            null,
+            null,
+            expectedCategories,
+            expectedGenres,
+            expectedMembers
+        );
+
+        // then
+        assertNotNull(actualVideo.getDomainEvents());
     }
 }
