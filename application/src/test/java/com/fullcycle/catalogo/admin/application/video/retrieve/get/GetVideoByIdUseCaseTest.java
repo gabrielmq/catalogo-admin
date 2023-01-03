@@ -70,11 +70,11 @@ public class GetVideoByIdUseCaseTest extends UseCaseTest {
         );
 
         aVideo
-            .setVideo(expectedVideo)
-            .setTrailer(expectedTrailer)
-            .setBanner(expectedBanner)
-            .setThumbnail(expectedThumb)
-            .setThumbnailHalf(expectedThumbHalf);
+            .updatedVideoMedia(expectedVideo)
+            .updateTrailerMedia(expectedTrailer)
+            .updateBannerMedia(expectedBanner)
+            .updateThumbnailMedia(expectedThumb)
+            .updateThumbnailHalfMedia(expectedThumbHalf);
 
         final var expectedId = aVideo.getId();
 

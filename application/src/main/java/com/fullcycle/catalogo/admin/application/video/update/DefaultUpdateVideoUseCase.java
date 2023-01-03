@@ -96,31 +96,31 @@ public class DefaultUpdateVideoUseCase extends UpdateVideoUseCase {
             aCommand.getVideo()
                 .ifPresent(video -> {
                     final var videoResource = VideoResource.of(video, VIDEO);
-                    aVideo.setVideo(resourceGateway.storeAudioVideo(anId, videoResource));
+                    aVideo.updatedVideoMedia(resourceGateway.storeAudioVideo(anId, videoResource));
                 });
 
             aCommand.getTrailer()
                 .ifPresent(trailer -> {
                     final var videoResource = VideoResource.of(trailer, TRAILER);
-                    aVideo.setTrailer(resourceGateway.storeAudioVideo(anId, videoResource));
+                    aVideo.updateTrailerMedia(resourceGateway.storeAudioVideo(anId, videoResource));
                 });
 
             aCommand.getBanner()
                 .ifPresent(banner -> {
                     final var videoResource = VideoResource.of(banner, BANNER);
-                    aVideo.setBanner(resourceGateway.storeImage(anId, videoResource));
+                    aVideo.updateBannerMedia(resourceGateway.storeImage(anId, videoResource));
                 });
 
             aCommand.getThumbnail()
                 .ifPresent(thumb -> {
                     final var videoResource = VideoResource.of(thumb, THUMBNAIL);
-                    aVideo.setThumbnail(resourceGateway.storeImage(anId, videoResource));
+                    aVideo.updateThumbnailMedia(resourceGateway.storeImage(anId, videoResource));
                 });
 
             aCommand.getThumbnailHalf()
                 .ifPresent(thumbHalf -> {
                     final var videoResource = VideoResource.of(thumbHalf, THUMBNAIL_HALF);
-                    aVideo.setThumbnailHalf(resourceGateway.storeImage(anId, videoResource));
+                    aVideo.updateThumbnailHalfMedia(resourceGateway.storeImage(anId, videoResource));
                 });
 
             return videoGateway.update(aVideo);
