@@ -220,18 +220,18 @@ public class Video extends AggregateRoot<VideoID> {
 
     public Video processing(final VideoMediaType aType) {
         if (VIDEO == aType) {
-            getVideo().ifPresent(video -> setVideo(video.processing()));
+            getVideo().ifPresent(video -> updatedVideoMedia(video.processing()));
         } else if (TRAILER == aType) {
-            getTrailer().ifPresent(trailer -> setTrailer(trailer.processing()));
+            getTrailer().ifPresent(trailer -> updateTrailerMedia(trailer.processing()));
         }
         return this;
     }
 
     public Video completed(final VideoMediaType aType, final String encodedPath) {
         if (VIDEO == aType) {
-            getVideo().ifPresent(video -> setVideo(video.completed(encodedPath)));
+            getVideo().ifPresent(video -> updatedVideoMedia(video.completed(encodedPath)));
         } else if (TRAILER == aType) {
-            getTrailer().ifPresent(trailer -> setTrailer(trailer.completed(encodedPath)));
+            getTrailer().ifPresent(trailer -> updateTrailerMedia(trailer.completed(encodedPath)));
         }
         return this;
     }
@@ -276,7 +276,7 @@ public class Video extends AggregateRoot<VideoID> {
         return Optional.ofNullable(banner);
     }
 
-    public Video setBanner(final ImageMedia banner) {
+    public Video updateBannerMedia(final ImageMedia banner) {
         this.banner = banner;
         this.updatedAt = InstantUtils.now();
         return this;
@@ -286,7 +286,7 @@ public class Video extends AggregateRoot<VideoID> {
         return Optional.ofNullable(thumbnail);
     }
 
-    public Video setThumbnail(final ImageMedia thumbnail) {
+    public Video updateThumbnailMedia(final ImageMedia thumbnail) {
         this.thumbnail = thumbnail;
         this.updatedAt = InstantUtils.now();
         return this;
@@ -296,7 +296,7 @@ public class Video extends AggregateRoot<VideoID> {
         return Optional.ofNullable(thumbnailHalf);
     }
 
-    public Video setThumbnailHalf(final ImageMedia thumbnailHalf) {
+    public Video updateThumbnailHalfMedia(final ImageMedia thumbnailHalf) {
         this.thumbnailHalf = thumbnailHalf;
         this.updatedAt = InstantUtils.now();
         return this;
@@ -306,9 +306,10 @@ public class Video extends AggregateRoot<VideoID> {
         return Optional.ofNullable(trailer);
     }
 
-    public Video setTrailer(final AudioVideoMedia trailer) {
+    public Video updateTrailerMedia(final AudioVideoMedia trailer) {
         this.trailer = trailer;
         this.updatedAt = InstantUtils.now();
+        onAudioVideoMediaUpdated(trailer);
         return this;
     }
 
@@ -316,10 +317,17 @@ public class Video extends AggregateRoot<VideoID> {
         return Optional.ofNullable(video);
     }
 
-    public Video setVideo(final AudioVideoMedia video) {
+    public Video updatedVideoMedia(final AudioVideoMedia video) {
         this.video = video;
         this.updatedAt = InstantUtils.now();
+        onAudioVideoMediaUpdated(video);
         return this;
+    }
+
+    private void onAudioVideoMediaUpdated(final AudioVideoMedia videoMedia) {
+        if (Objects.nonNull(videoMedia) && videoMedia.isPendingEncode()) {
+            registerEvent(new VideoMediaCreated(id.getValue(), videoMedia.rawLocation()));
+        }
     }
 
     public Set<CategoryID> getCategories() {

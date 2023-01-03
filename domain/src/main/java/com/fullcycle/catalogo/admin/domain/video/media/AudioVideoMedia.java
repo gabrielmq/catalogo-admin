@@ -92,6 +92,10 @@ public class AudioVideoMedia extends ValueObject {
         return encodedLocation;
     }
 
+    public boolean isPendingEncode() {
+        return this.status == PENDING;
+    }
+
     public MediaStatus status() {
         return status;
     }

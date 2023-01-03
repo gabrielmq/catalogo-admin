@@ -40,7 +40,7 @@ public class UpdateMediaStatusUseCaseTest extends UseCaseTest {
         final var expectedType = VideoMediaType.VIDEO;
         final var expectedMedia = Fixture.Videos.audioVideo(expectedType);
 
-        final var aVideo = Fixture.Videos.newVideo().setVideo(expectedMedia);
+        final var aVideo = Fixture.Videos.newVideo().updatedVideoMedia(expectedMedia);
 
         final var expectedId = aVideo.getId();
 
@@ -85,7 +85,7 @@ public class UpdateMediaStatusUseCaseTest extends UseCaseTest {
         final var expectedType = VideoMediaType.TRAILER;
         final var expectedMedia = Fixture.Videos.audioVideo(expectedType);
 
-        final var aVideo = Fixture.Videos.newVideo().setTrailer(expectedMedia);
+        final var aVideo = Fixture.Videos.newVideo().updateTrailerMedia(expectedMedia);
 
         final var expectedId = aVideo.getId();
 
@@ -131,7 +131,7 @@ public class UpdateMediaStatusUseCaseTest extends UseCaseTest {
         final var expectedType = VideoMediaType.TRAILER;
         final var expectedMedia = Fixture.Videos.audioVideo(expectedType);
 
-        final var aVideo = Fixture.Videos.newVideo().setTrailer(expectedMedia);
+        final var aVideo = Fixture.Videos.newVideo().updateTrailerMedia(expectedMedia);
 
         final var expectedId = aVideo.getId();
 
@@ -161,7 +161,7 @@ public class UpdateMediaStatusUseCaseTest extends UseCaseTest {
         final var expectedType = VideoMediaType.VIDEO;
         final var expectedMedia = Fixture.Videos.audioVideo(expectedType);
 
-        final var aVideo = Fixture.Videos.newVideo().setVideo(expectedMedia);
+        final var aVideo = Fixture.Videos.newVideo().updatedVideoMedia(expectedMedia);
 
         final var expectedId = aVideo.getId();
 
@@ -206,7 +206,7 @@ public class UpdateMediaStatusUseCaseTest extends UseCaseTest {
         final var expectedType = VideoMediaType.TRAILER;
         final var expectedMedia = Fixture.Videos.audioVideo(expectedType);
 
-        final var aVideo = Fixture.Videos.newVideo().setTrailer(expectedMedia);
+        final var aVideo = Fixture.Videos.newVideo().updateTrailerMedia(expectedMedia);
 
         final var expectedId = aVideo.getId();
 

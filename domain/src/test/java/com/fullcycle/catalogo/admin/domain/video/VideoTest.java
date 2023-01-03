@@ -151,7 +151,7 @@ public class VideoTest {
     }
 
     @Test
-    public void givenValidVideo_whenCallsSetVideo_thenShouldReturnUpdated() {
+    public void givenValidVideo_whenCallsUpdateVideoMedia_thenShouldReturnUpdated() {
         // given
         final var expectedTitle = "System Design Interviews";
         final var expectedLaunchedAt = Year.of(2022);
@@ -186,8 +186,10 @@ public class VideoTest {
             "/123/videos"
         );
 
+        final var expectedDomainEvents = 1;
+
         // when
-        final var actualVideo = Video.with(aVideo).setVideo(aVideoMedia);
+        final var actualVideo = Video.with(aVideo).updatedVideoMedia(aVideoMedia);
 
         // then
         assertNotNull(actualVideo);
@@ -209,12 +211,18 @@ public class VideoTest {
         assertTrue(actualVideo.getBanner().isEmpty());
         assertTrue(actualVideo.getThumbnail().isEmpty());
         assertTrue(actualVideo.getThumbnailHalf().isEmpty());
+        assertEquals(expectedDomainEvents, actualVideo.getDomainEvents().size());
+
+        final var actualEvent = (VideoMediaCreated) actualVideo.getDomainEvents().get(0);
+        assertEquals(aVideo.getId().getValue(), actualEvent.resourceId());
+        assertEquals(aVideoMedia.rawLocation(), actualEvent.filePath());
+        assertNotNull(actualEvent.occurredOn());
 
         assertDoesNotThrow(() -> aVideo.validate(new ThrowsValidationHandler()));
     }
 
     @Test
-    public void givenValidVideo_whenCallsSetTrailer_thenShouldReturnUpdated() {
+    public void givenValidVideo_whenCallsUpdateTrailerMedia_thenShouldReturnUpdated() {
         // given
         final var expectedTitle = "System Design Interviews";
         final var expectedLaunchedAt = Year.of(2022);
@@ -249,8 +257,10 @@ public class VideoTest {
             "/123/videos"
         );
 
+        final var expectedDomainEvents = 1;
+
         // when
-        final var actualVideo = Video.with(aVideo).setTrailer(aTrailerMedia);
+        final var actualVideo = Video.with(aVideo).updateTrailerMedia(aTrailerMedia);
 
         // then
         assertNotNull(actualVideo);
@@ -272,12 +282,18 @@ public class VideoTest {
         assertTrue(actualVideo.getBanner().isEmpty());
         assertTrue(actualVideo.getThumbnail().isEmpty());
         assertTrue(actualVideo.getThumbnailHalf().isEmpty());
+        assertEquals(expectedDomainEvents, actualVideo.getDomainEvents().size());
+
+        final var actualEvent = (VideoMediaCreated) actualVideo.getDomainEvents().get(0);
+        assertEquals(aVideo.getId().getValue(), actualEvent.resourceId());
+        assertEquals(aTrailerMedia.rawLocation(), actualEvent.filePath());
+        assertNotNull(actualEvent.occurredOn());
 
         assertDoesNotThrow(() -> aVideo.validate(new ThrowsValidationHandler()));
     }
 
     @Test
-    public void givenValidVideo_whenCallsSetBanner_thenShouldReturnUpdated() {
+    public void givenValidVideo_whenCallsUpdateBannerMedia_thenShouldReturnUpdated() {
         // given
         final var expectedTitle = "System Design Interviews";
         final var expectedLaunchedAt = Year.of(2022);
@@ -313,7 +329,7 @@ public class VideoTest {
         );
 
         // when
-        final var actualVideo = Video.with(aVideo).setBanner(aBanner);
+        final var actualVideo = Video.with(aVideo).updateBannerMedia(aBanner);
 
         // then
         assertNotNull(actualVideo);
@@ -340,7 +356,7 @@ public class VideoTest {
     }
 
     @Test
-    public void givenValidVideo_whenCallsSetThumbnail_thenShouldReturnUpdated() {
+    public void givenValidVideo_whenCallsUpdateThumbnailMedia_thenShouldReturnUpdated() {
         // given
         final var expectedTitle = "System Design Interviews";
         final var expectedLaunchedAt = Year.of(2022);
@@ -376,7 +392,7 @@ public class VideoTest {
         );
 
         // when
-        final var actualVideo = Video.with(aVideo).setThumbnail(aThumbnail);
+        final var actualVideo = Video.with(aVideo).updateThumbnailMedia(aThumbnail);
 
         // then
         assertNotNull(actualVideo);
@@ -403,7 +419,7 @@ public class VideoTest {
     }
 
     @Test
-    public void givenValidVideo_whenCallsSetThumbnailHalf_thenShouldReturnUpdated() {
+    public void givenValidVideo_whenCallsUpdateThumbnailHalfMedia_thenShouldReturnUpdated() {
         // given
         final var expectedTitle = "System Design Interviews";
         final var expectedLaunchedAt = Year.of(2022);
@@ -439,7 +455,7 @@ public class VideoTest {
         );
 
         // when
-        final var actualVideo = Video.with(aVideo).setThumbnailHalf(aThumbnailHalf);
+        final var actualVideo = Video.with(aVideo).updateThumbnailHalfMedia(aThumbnailHalf);
 
         // then
         assertNotNull(actualVideo);
