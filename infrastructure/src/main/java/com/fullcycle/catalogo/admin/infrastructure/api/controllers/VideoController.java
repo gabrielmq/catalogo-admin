@@ -2,10 +2,13 @@ package com.fullcycle.catalogo.admin.infrastructure.api.controllers;
 
 import com.fullcycle.catalogo.admin.application.video.create.CreateVideoCommand;
 import com.fullcycle.catalogo.admin.application.video.create.CreateVideoUseCase;
+import com.fullcycle.catalogo.admin.application.video.retrieve.get.GetVideoByIdUseCase;
 import com.fullcycle.catalogo.admin.domain.resource.Resource;
 import com.fullcycle.catalogo.admin.infrastructure.api.VideoAPI;
 import com.fullcycle.catalogo.admin.infrastructure.utils.HashingUtils;
 import com.fullcycle.catalogo.admin.infrastructure.video.models.CreateVideoRequest;
+import com.fullcycle.catalogo.admin.infrastructure.video.models.VideoResponse;
+import com.fullcycle.catalogo.admin.infrastructure.video.presenters.VideoAPIPresenter;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,9 +20,14 @@ import java.util.Set;
 @RestController
 public class VideoController implements VideoAPI {
     private final CreateVideoUseCase createVideoUseCase;
+    private final GetVideoByIdUseCase getVideoByIdUseCase;
 
-    public VideoController(final CreateVideoUseCase createVideoUseCase) {
+    public VideoController(
+        final CreateVideoUseCase createVideoUseCase,
+        final GetVideoByIdUseCase getVideoByIdUseCase
+    ) {
         this.createVideoUseCase = Objects.requireNonNull(createVideoUseCase);
+        this.getVideoByIdUseCase = Objects.requireNonNull(getVideoByIdUseCase);
     }
 
     @Override
@@ -83,6 +91,11 @@ public class VideoController implements VideoAPI {
         return ResponseEntity
                 .created(URI.create("/videos/%s".formatted(output.id())))
                 .body(output);
+    }
+
+    @Override
+    public VideoResponse getById(final String anId) {
+        return VideoAPIPresenter.present(getVideoByIdUseCase.execute(anId));
     }
 
     private Resource resourceOf(final MultipartFile aFile) {
