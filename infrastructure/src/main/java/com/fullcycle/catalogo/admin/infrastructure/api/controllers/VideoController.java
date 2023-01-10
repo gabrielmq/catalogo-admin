@@ -2,6 +2,7 @@ package com.fullcycle.catalogo.admin.infrastructure.api.controllers;
 
 import com.fullcycle.catalogo.admin.application.video.create.CreateVideoCommand;
 import com.fullcycle.catalogo.admin.application.video.create.CreateVideoUseCase;
+import com.fullcycle.catalogo.admin.application.video.delete.DeleteVideoUseCase;
 import com.fullcycle.catalogo.admin.application.video.retrieve.get.GetVideoByIdUseCase;
 import com.fullcycle.catalogo.admin.application.video.update.UpdateVideoCommand;
 import com.fullcycle.catalogo.admin.application.video.update.UpdateVideoUseCase;
@@ -25,15 +26,18 @@ public class VideoController implements VideoAPI {
     private final CreateVideoUseCase createVideoUseCase;
     private final GetVideoByIdUseCase getVideoByIdUseCase;
     private final UpdateVideoUseCase updateVideoUseCase;
+    private final DeleteVideoUseCase deleteVideoUseCase;
 
     public VideoController(
         final CreateVideoUseCase createVideoUseCase,
         final GetVideoByIdUseCase getVideoByIdUseCase,
-        final UpdateVideoUseCase updateVideoUseCase
+        final UpdateVideoUseCase updateVideoUseCase,
+        final DeleteVideoUseCase deleteVideoUseCase
     ) {
         this.createVideoUseCase = Objects.requireNonNull(createVideoUseCase);
         this.getVideoByIdUseCase = Objects.requireNonNull(getVideoByIdUseCase);
         this.updateVideoUseCase = Objects.requireNonNull(updateVideoUseCase);
+        this.deleteVideoUseCase = Objects.requireNonNull(deleteVideoUseCase);
     }
 
     @Override
@@ -124,6 +128,11 @@ public class VideoController implements VideoAPI {
         return ResponseEntity.ok()
                 .location(URI.create("/videos/%s".formatted(output.id())))
                 .body(VideoAPIPresenter.present(output));
+    }
+
+    @Override
+    public void deleteById(String anId) {
+        deleteVideoUseCase.execute(anId);
     }
 
     private Resource resourceOf(final MultipartFile aFile) {

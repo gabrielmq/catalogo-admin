@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Set;
 
+import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 
@@ -84,4 +85,16 @@ public interface VideoAPI {
         @ApiResponse(responseCode = "500", description = "An internal server error was thrown")
     })
     ResponseEntity<?> updateById(@PathVariable(name = "id") String anId, @RequestBody UpdateVideoRequest aRequest);
+
+    @DeleteMapping(
+        value = "{id}",
+        produces = APPLICATION_JSON_VALUE
+    )
+    @ResponseStatus(NO_CONTENT)
+    @Operation(summary = "Delete a video by it's identifier")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "204", description = "Video deleted"),
+        @ApiResponse(responseCode = "500", description = "An internal server error was thrown")
+    })
+    void deleteById(@PathVariable(name = "id") String anId);
 }
