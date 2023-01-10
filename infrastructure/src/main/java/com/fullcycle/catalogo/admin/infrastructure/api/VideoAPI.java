@@ -1,6 +1,7 @@
 package com.fullcycle.catalogo.admin.infrastructure.api;
 
 import com.fullcycle.catalogo.admin.infrastructure.video.models.CreateVideoRequest;
+import com.fullcycle.catalogo.admin.infrastructure.video.models.UpdateVideoRequest;
 import com.fullcycle.catalogo.admin.infrastructure.video.models.VideoResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -64,9 +65,23 @@ public interface VideoAPI {
     )
     @Operation(summary = "Get a video by it's identifier")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "201", description = "Video retrieved successfully"),
-        @ApiResponse(responseCode = "404", description = "Vide was not found"),
+        @ApiResponse(responseCode = "200", description = "Video retrieved successfully"),
+        @ApiResponse(responseCode = "404", description = "Video was not found"),
         @ApiResponse(responseCode = "500", description = "An internal server error was thrown")
     })
     VideoResponse getById(@PathVariable(name = "id") String anId);
+
+    @PutMapping(
+        value = "{id}",
+        consumes = APPLICATION_JSON_VALUE,
+        produces = APPLICATION_JSON_VALUE
+    )
+    @Operation(summary = "Update a video by it's identifier")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Video updated successfully"),
+        @ApiResponse(responseCode = "404", description = "Video was not found"),
+        @ApiResponse(responseCode = "422", description = "A validation error was thrown"),
+        @ApiResponse(responseCode = "500", description = "An internal server error was thrown")
+    })
+    ResponseEntity<?> updateById(@PathVariable(name = "id") String anId, @RequestBody UpdateVideoRequest aRequest);
 }

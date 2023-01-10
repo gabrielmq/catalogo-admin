@@ -3,10 +3,13 @@ package com.fullcycle.catalogo.admin.infrastructure.api.controllers;
 import com.fullcycle.catalogo.admin.application.video.create.CreateVideoCommand;
 import com.fullcycle.catalogo.admin.application.video.create.CreateVideoUseCase;
 import com.fullcycle.catalogo.admin.application.video.retrieve.get.GetVideoByIdUseCase;
+import com.fullcycle.catalogo.admin.application.video.update.UpdateVideoCommand;
+import com.fullcycle.catalogo.admin.application.video.update.UpdateVideoUseCase;
 import com.fullcycle.catalogo.admin.domain.resource.Resource;
 import com.fullcycle.catalogo.admin.infrastructure.api.VideoAPI;
 import com.fullcycle.catalogo.admin.infrastructure.utils.HashingUtils;
 import com.fullcycle.catalogo.admin.infrastructure.video.models.CreateVideoRequest;
+import com.fullcycle.catalogo.admin.infrastructure.video.models.UpdateVideoRequest;
 import com.fullcycle.catalogo.admin.infrastructure.video.models.VideoResponse;
 import com.fullcycle.catalogo.admin.infrastructure.video.presenters.VideoAPIPresenter;
 import org.springframework.http.ResponseEntity;
@@ -21,13 +24,16 @@ import java.util.Set;
 public class VideoController implements VideoAPI {
     private final CreateVideoUseCase createVideoUseCase;
     private final GetVideoByIdUseCase getVideoByIdUseCase;
+    private final UpdateVideoUseCase updateVideoUseCase;
 
     public VideoController(
         final CreateVideoUseCase createVideoUseCase,
-        final GetVideoByIdUseCase getVideoByIdUseCase
+        final GetVideoByIdUseCase getVideoByIdUseCase,
+        final UpdateVideoUseCase updateVideoUseCase
     ) {
         this.createVideoUseCase = Objects.requireNonNull(createVideoUseCase);
         this.getVideoByIdUseCase = Objects.requireNonNull(getVideoByIdUseCase);
+        this.updateVideoUseCase = Objects.requireNonNull(updateVideoUseCase);
     }
 
     @Override
@@ -96,6 +102,28 @@ public class VideoController implements VideoAPI {
     @Override
     public VideoResponse getById(final String anId) {
         return VideoAPIPresenter.present(getVideoByIdUseCase.execute(anId));
+    }
+
+    @Override
+    public ResponseEntity<?> updateById(final String anId, final UpdateVideoRequest aRequest) {
+        final var aCommand = UpdateVideoCommand.with(
+            anId,
+            aRequest.title(),
+            aRequest.description(),
+            aRequest.yearLaunched(),
+            aRequest.duration(),
+            aRequest.opened(),
+            aRequest.published(),
+            aRequest.rating(),
+            aRequest.categories(),
+            aRequest.genres(),
+            aRequest.members()
+        );
+
+        final var output = updateVideoUseCase.execute(aCommand);
+        return ResponseEntity.ok()
+                .location(URI.create("/videos/%s".formatted(output.id())))
+                .body(VideoAPIPresenter.present(output));
     }
 
     private Resource resourceOf(final MultipartFile aFile) {
