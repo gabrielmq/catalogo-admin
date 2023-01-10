@@ -6,6 +6,9 @@ import com.fullcycle.catalogo.admin.application.video.create.CreateVideoCommand;
 import com.fullcycle.catalogo.admin.application.video.create.CreateVideoOutput;
 import com.fullcycle.catalogo.admin.application.video.create.CreateVideoUseCase;
 import com.fullcycle.catalogo.admin.application.video.delete.DeleteVideoUseCase;
+import com.fullcycle.catalogo.admin.application.video.media.get.GetMediaCommand;
+import com.fullcycle.catalogo.admin.application.video.media.get.GetMediaUseCase;
+import com.fullcycle.catalogo.admin.application.video.media.get.MediaOutput;
 import com.fullcycle.catalogo.admin.application.video.retrieve.get.GetVideoByIdUseCase;
 import com.fullcycle.catalogo.admin.application.video.retrieve.get.VideoOutput;
 import com.fullcycle.catalogo.admin.application.video.retrieve.list.ListVideoUseCase;
@@ -46,6 +49,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
+import static org.springframework.http.HttpHeaders.*;
 import static org.springframework.http.MediaType.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -72,6 +76,9 @@ public class VideoAPITest {
 
     @MockBean
     private ListVideoUseCase listVideosUseCase;
+
+    @MockBean
+    private GetMediaUseCase getMediaUseCase;
 
     @Test
     public void givenAValidCommand_whenCallsCreateFull_thenShouldReturnAnId() throws Exception {
@@ -580,5 +587,36 @@ public class VideoAPITest {
         assertTrue(actualQuery.categories().isEmpty());
         assertTrue(actualQuery.castMembers().isEmpty());
         assertTrue(actualQuery.genres().isEmpty());
+    }
+
+    @Test
+    public void givenAValidVideoIDAndFileType_whenCallsGetMediaByID_thenShouldReturnContent() throws Exception {
+        // given
+        final var expectedId = VideoID.unique();
+        final var expectedMediaType = VideoMediaType.VIDEO;
+        final var expectedResource = Fixture.Videos.resource(expectedMediaType);
+        final var expectedMedia =
+            new MediaOutput(expectedResource.name(), expectedResource.contentType(), expectedResource.content());
+
+        when(getMediaUseCase.execute(any())).thenReturn(expectedMedia);
+
+        // when
+        final var aRequest = get("/videos/{id}/medias/{type}", expectedId.getValue(), expectedMediaType);
+        final var response = mvc.perform(aRequest);
+
+        // then
+        response
+            .andExpect(status().isOk())
+            .andExpect(header().string(CONTENT_TYPE, expectedMedia.contentType()))
+            .andExpect(header().string(CONTENT_LENGTH, String.valueOf(expectedMedia.content().length)))
+            .andExpect(header().string(CONTENT_DISPOSITION, "attachment; filename=%s".formatted(expectedMedia.name())))
+            .andExpect(content().bytes(expectedMedia.content()));
+
+        final var captor = ArgumentCaptor.forClass(GetMediaCommand.class);
+        verify(getMediaUseCase).execute(captor.capture());
+
+        final var actualCmd = captor.getValue();
+        assertEquals(expectedId.getValue(), actualCmd.videoId());
+        assertEquals(expectedMediaType.name(), actualCmd.mediaType());
     }
 }

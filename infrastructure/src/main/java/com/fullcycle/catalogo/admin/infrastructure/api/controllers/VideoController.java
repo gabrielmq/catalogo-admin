@@ -3,6 +3,8 @@ package com.fullcycle.catalogo.admin.infrastructure.api.controllers;
 import com.fullcycle.catalogo.admin.application.video.create.CreateVideoCommand;
 import com.fullcycle.catalogo.admin.application.video.create.CreateVideoUseCase;
 import com.fullcycle.catalogo.admin.application.video.delete.DeleteVideoUseCase;
+import com.fullcycle.catalogo.admin.application.video.media.get.GetMediaCommand;
+import com.fullcycle.catalogo.admin.application.video.media.get.GetMediaUseCase;
 import com.fullcycle.catalogo.admin.application.video.retrieve.get.GetVideoByIdUseCase;
 import com.fullcycle.catalogo.admin.application.video.retrieve.list.ListVideoUseCase;
 import com.fullcycle.catalogo.admin.application.video.update.UpdateVideoCommand;
@@ -20,6 +22,7 @@ import com.fullcycle.catalogo.admin.infrastructure.video.models.UpdateVideoReque
 import com.fullcycle.catalogo.admin.infrastructure.video.models.VideoListResponse;
 import com.fullcycle.catalogo.admin.infrastructure.video.models.VideoResponse;
 import com.fullcycle.catalogo.admin.infrastructure.video.presenters.VideoAPIPresenter;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,6 +32,7 @@ import java.util.Objects;
 import java.util.Set;
 
 import static com.fullcycle.catalogo.admin.domain.utils.CollectionUtils.mapTo;
+import static org.springframework.http.HttpHeaders.CONTENT_DISPOSITION;
 
 @RestController
 public class VideoController implements VideoAPI {
@@ -37,19 +41,22 @@ public class VideoController implements VideoAPI {
     private final UpdateVideoUseCase updateVideoUseCase;
     private final DeleteVideoUseCase deleteVideoUseCase;
     private final ListVideoUseCase listVideoUseCase;
+    private final GetMediaUseCase getMediaUseCase;
 
     public VideoController(
         final CreateVideoUseCase createVideoUseCase,
         final GetVideoByIdUseCase getVideoByIdUseCase,
         final UpdateVideoUseCase updateVideoUseCase,
         final DeleteVideoUseCase deleteVideoUseCase,
-        final ListVideoUseCase listVideoUseCase
+        final ListVideoUseCase listVideoUseCase,
+        final GetMediaUseCase getMediaUseCase
     ) {
         this.createVideoUseCase = Objects.requireNonNull(createVideoUseCase);
         this.getVideoByIdUseCase = Objects.requireNonNull(getVideoByIdUseCase);
         this.updateVideoUseCase = Objects.requireNonNull(updateVideoUseCase);
         this.deleteVideoUseCase = Objects.requireNonNull(deleteVideoUseCase);
         this.listVideoUseCase = Objects.requireNonNull(listVideoUseCase);
+        this.getMediaUseCase = Objects.requireNonNull(getMediaUseCase);
     }
 
     @Override
@@ -170,6 +177,16 @@ public class VideoController implements VideoAPI {
     @Override
     public void deleteById(String anId) {
         deleteVideoUseCase.execute(anId);
+    }
+
+    @Override
+    public ResponseEntity<byte[]> getMediaByType(final String anId, final String aType) {
+        final var output = getMediaUseCase.execute(GetMediaCommand.with(anId, aType));
+        return ResponseEntity.ok()
+                .contentType(MediaType.valueOf(output.contentType()))
+                .contentLength(output.content().length)
+                .header(CONTENT_DISPOSITION, "attachment; filename=%s".formatted(output.name()))
+                .body(output.content());
     }
 
     private Resource resourceOf(final MultipartFile aFile) {
