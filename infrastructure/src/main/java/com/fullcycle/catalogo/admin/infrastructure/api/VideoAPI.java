@@ -1,7 +1,9 @@
 package com.fullcycle.catalogo.admin.infrastructure.api;
 
+import com.fullcycle.catalogo.admin.domain.pagination.Pagination;
 import com.fullcycle.catalogo.admin.infrastructure.video.models.CreateVideoRequest;
 import com.fullcycle.catalogo.admin.infrastructure.video.models.UpdateVideoRequest;
+import com.fullcycle.catalogo.admin.infrastructure.video.models.VideoListResponse;
 import com.fullcycle.catalogo.admin.infrastructure.video.models.VideoResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -59,6 +61,25 @@ public interface VideoAPI {
         @ApiResponse(responseCode = "500", description = "An internal server error was thrown")
     })
     ResponseEntity<?> createPartial(@RequestBody CreateVideoRequest aRequest);
+
+
+    @GetMapping(produces = APPLICATION_JSON_VALUE)
+    @Operation(summary = "List all videos paginated")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Videos listed"),
+        @ApiResponse(responseCode = "422", description = "A query param was invalid"),
+        @ApiResponse(responseCode = "500", description = "An internal server error was thrown"),
+    })
+    Pagination<VideoListResponse> list(
+        @RequestParam(name = "search", required = false, defaultValue = "") String search,
+        @RequestParam(name = "page", required = false, defaultValue = "0") int page,
+        @RequestParam(name = "perPage", required = false, defaultValue = "25") int perPage,
+        @RequestParam(name = "sort", required = false, defaultValue = "title") String sort,
+        @RequestParam(name = "dir", required = false, defaultValue = "asc") String direction,
+        @RequestParam(name = "cast_members_ids", required = false, defaultValue = "") Set<String> castMembers,
+        @RequestParam(name = "categories_ids", required = false, defaultValue = "") Set<String> categories,
+        @RequestParam(name = "genres_ids", required = false, defaultValue = "") Set<String> genres
+    );
 
     @GetMapping(
         value = "{id}",
