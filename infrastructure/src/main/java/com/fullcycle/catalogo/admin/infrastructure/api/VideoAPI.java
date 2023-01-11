@@ -120,7 +120,6 @@ public interface VideoAPI {
     void deleteById(@PathVariable(name = "id") String anId);
 
     @GetMapping(value = "{id}/medias/{type}")
-    @ResponseStatus(NO_CONTENT)
     @Operation(summary = "Get a video media by it's type")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Media retrieved successfully"),
@@ -130,5 +129,18 @@ public interface VideoAPI {
     ResponseEntity<byte[]> getMediaByType(
         @PathVariable(name = "id") String anId,
         @PathVariable(name = "type") String aType
+    );
+
+    @PostMapping(value = "{id}/medias/{type}")
+    @Operation(summary = "Upload a video media by it's type")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Media created successfully"),
+        @ApiResponse(responseCode = "404", description = "Video was not found"),
+        @ApiResponse(responseCode = "500", description = "An internal server error was thrown")
+    })
+    ResponseEntity<?> uploadMediaByType(
+        @PathVariable(name = "id") String anId,
+        @PathVariable(name = "type") String aType,
+        @RequestParam(name = "media_file") MultipartFile aMedia
     );
 }
