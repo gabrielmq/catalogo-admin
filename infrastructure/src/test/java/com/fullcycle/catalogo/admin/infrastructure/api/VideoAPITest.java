@@ -22,6 +22,7 @@ import com.fullcycle.catalogo.admin.application.video.update.UpdateVideoUseCase;
 import com.fullcycle.catalogo.admin.domain.Fixture;
 import com.fullcycle.catalogo.admin.domain.castmember.CastMemberID;
 import com.fullcycle.catalogo.admin.domain.category.CategoryID;
+import com.fullcycle.catalogo.admin.domain.exceptions.NotFoundException;
 import com.fullcycle.catalogo.admin.domain.exceptions.NotificationException;
 import com.fullcycle.catalogo.admin.domain.genre.GenreID;
 import com.fullcycle.catalogo.admin.domain.pagination.Pagination;
@@ -168,6 +169,29 @@ public class VideoAPITest {
     }
 
     @Test
+    public void givenAnInvalidCommand_whenCallsCreateFull_thenShouldReturnError() throws Exception {
+        // given
+        final var expectedErrorMessage = "'title' is required";
+
+        when(createVideoUseCase.execute(any()))
+            .thenThrow(NotificationException.with(new Error(expectedErrorMessage)));
+
+        // when
+        final var aRequest = multipart("/videos")
+                .accept(APPLICATION_JSON)
+                .contentType(MULTIPART_FORM_DATA);
+
+        final var response = mvc.perform(aRequest);
+
+        // then
+        response
+            .andExpect(status().isUnprocessableEntity())
+            .andExpect(header().string("Content-Type", APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$.message", equalTo(expectedErrorMessage)));
+
+    }
+
+    @Test
     public void givenAValidCommand_whenCallsCreatePartial_thenShouldReturnAnId() throws Exception {
         // given
         final var categoryID = Fixture.Categories.category().getId();
@@ -234,6 +258,48 @@ public class VideoAPITest {
         assertTrue(actualCmd.getBanner().isEmpty());
         assertTrue(actualCmd.getThumbnail().isEmpty());
         assertTrue(actualCmd.getThumbnailHalf().isEmpty());
+    }
+
+    @Test
+    public void givenAnInvalidCommand_whenCallsCreatePartial_thenShouldReturnError() throws Exception {
+        // given
+        final var expectedErrorMessage = "'description' is required";
+
+        when(createVideoUseCase.execute(any()))
+            .thenThrow(NotificationException.with(new Error(expectedErrorMessage)));
+
+        // when
+        final var aRequest = post("/videos")
+                .accept(APPLICATION_JSON)
+                .contentType(APPLICATION_JSON)
+                .content(
+                    """
+                    {
+                        "title": "test"
+                    }
+                    """
+                );
+
+        final var response = mvc.perform(aRequest);
+
+        // then
+        response
+            .andExpect(status().isUnprocessableEntity())
+            .andExpect(header().string("Content-Type", APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$.message", equalTo(expectedErrorMessage)));
+    }
+
+    @Test
+    public void givenAnEmptyBody_whenCallsCreatePartial_thenShouldReturnError() throws Exception {
+        // when
+        final var aRequest = post("/videos")
+                .accept(APPLICATION_JSON)
+                .contentType(APPLICATION_JSON);
+
+        final var response = mvc.perform(aRequest);
+
+        // then
+        response.andExpect(status().isBadRequest());
     }
 
     @Test
@@ -330,6 +396,28 @@ public class VideoAPITest {
             .andExpect(jsonPath("$.thumbnail_half.name", equalTo(expectedThumbHalf.name())))
             .andExpect(jsonPath("$.thumbnail_half.location", equalTo(expectedThumbHalf.location())))
             .andExpect(jsonPath("$.thumbnail_half.checksum", equalTo(expectedThumbHalf.checksum())));
+    }
+
+    @Test
+    public void givenAnInvalidId_whenCallsGetById_thenShouldReturnNotFound() throws Exception {
+        // given
+        final var expectedId = VideoID.unique();
+        final var expectedErrorMessage = "Video with ID %s was not found".formatted(expectedId.getValue());
+
+        when(getVideoByIdUseCase.execute(any()))
+            .thenThrow(NotFoundException.with(Video.class, expectedId));
+
+        // when
+        final var aRequest = get("/videos/{id}",  expectedId)
+                .accept(APPLICATION_JSON);
+
+        final var response = mvc.perform(aRequest);
+
+        // then
+        response
+            .andExpect(status().isNotFound())
+            .andExpect(header().string("Content-Type", APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$.message", equalTo(expectedErrorMessage)));
     }
 
     @Test
@@ -549,9 +637,6 @@ public class VideoAPITest {
         final var expectedTerms = "";
         final var expectedSort = "title";
         final var expectedDirection = "asc";
-        final var expectedCastMembers = "";
-        final var expectedGenres = "";
-        final var expectedCategories = "";
 
         final var expectedItemsCount = 1;
         final var expectedTotal = 1;
