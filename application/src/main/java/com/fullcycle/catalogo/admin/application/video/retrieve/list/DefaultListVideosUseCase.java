@@ -6,10 +6,10 @@ import com.fullcycle.catalogo.admin.domain.video.query.VideoSearchQuery;
 
 import java.util.Objects;
 
-public class DefaultListVideoUseCase extends ListVideoUseCase {
+public class DefaultListVideosUseCase extends ListVideosUseCase {
     private final VideoGateway videoGateway;
 
-    public DefaultListVideoUseCase(final VideoGateway videoGateway) {
+    public DefaultListVideosUseCase(final VideoGateway videoGateway) {
         this.videoGateway = Objects.requireNonNull(videoGateway);
     }
 
