@@ -17,6 +17,10 @@ spring:
     banner-mode: off
   lifecycle:
     timeout-per-shutdown-phase: 10s
+  servlet:
+    multipart:
+      max-file-size: 10GB
+      max-request-size: 100GB
   datasource:
     url: jdbc:mysql://${mysql.url}/${mysql.schema}?useSSL=true&serverTimezone=UTC&characterEncoding=UTF-8
     username: ${mysql.username}
