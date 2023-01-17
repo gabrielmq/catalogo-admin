@@ -12,9 +12,8 @@ import java.util.Set;
 
 import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.FetchType.EAGER;
-import static javax.persistence.FetchType.LAZY;
 
-@Entity
+@Entity(name = "Genres")
 @Table(name = "genres")
 public class GenreJpaEntity {
 
