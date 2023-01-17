@@ -8,7 +8,7 @@ import com.fullcycle.catalogo.admin.application.video.media.get.GetMediaUseCase;
 import com.fullcycle.catalogo.admin.application.video.media.upload.UploadMediaCommand;
 import com.fullcycle.catalogo.admin.application.video.media.upload.UploadMediaUseCase;
 import com.fullcycle.catalogo.admin.application.video.retrieve.get.GetVideoByIdUseCase;
-import com.fullcycle.catalogo.admin.application.video.retrieve.list.ListVideoUseCase;
+import com.fullcycle.catalogo.admin.application.video.retrieve.list.ListVideosUseCase;
 import com.fullcycle.catalogo.admin.application.video.update.UpdateVideoCommand;
 import com.fullcycle.catalogo.admin.application.video.update.UpdateVideoUseCase;
 import com.fullcycle.catalogo.admin.domain.castmember.CastMemberID;
@@ -46,7 +46,7 @@ public class VideoController implements VideoAPI {
     private final GetVideoByIdUseCase getVideoByIdUseCase;
     private final UpdateVideoUseCase updateVideoUseCase;
     private final DeleteVideoUseCase deleteVideoUseCase;
-    private final ListVideoUseCase listVideoUseCase;
+    private final ListVideosUseCase listVideosUseCase;
     private final GetMediaUseCase getMediaUseCase;
     private final UploadMediaUseCase uploadMediaUseCase;
 
@@ -55,7 +55,7 @@ public class VideoController implements VideoAPI {
         final GetVideoByIdUseCase getVideoByIdUseCase,
         final UpdateVideoUseCase updateVideoUseCase,
         final DeleteVideoUseCase deleteVideoUseCase,
-        final ListVideoUseCase listVideoUseCase,
+        final ListVideosUseCase listVideosUseCase,
         final GetMediaUseCase getMediaUseCase,
         final UploadMediaUseCase uploadMediaUseCase
     ) {
@@ -63,7 +63,7 @@ public class VideoController implements VideoAPI {
         this.getVideoByIdUseCase = Objects.requireNonNull(getVideoByIdUseCase);
         this.updateVideoUseCase = Objects.requireNonNull(updateVideoUseCase);
         this.deleteVideoUseCase = Objects.requireNonNull(deleteVideoUseCase);
-        this.listVideoUseCase = Objects.requireNonNull(listVideoUseCase);
+        this.listVideosUseCase = Objects.requireNonNull(listVideosUseCase);
         this.getMediaUseCase = Objects.requireNonNull(getMediaUseCase);
         this.uploadMediaUseCase = Objects.requireNonNull(uploadMediaUseCase);
     }
@@ -153,7 +153,7 @@ public class VideoController implements VideoAPI {
             mapTo(genres, GenreID::from)
         );
 
-        return VideoAPIPresenter.present(listVideoUseCase.execute(aQuery));
+        return VideoAPIPresenter.present(listVideosUseCase.execute(aQuery));
     }
 
     @Override

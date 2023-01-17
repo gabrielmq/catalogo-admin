@@ -3,11 +3,7 @@ package com.fullcycle.catalogo.admin.application.video.retrieve.list;
 import com.fullcycle.catalogo.admin.application.UseCaseTest;
 import com.fullcycle.catalogo.admin.application.genre.retrieve.list.GenreListOutput;
 import com.fullcycle.catalogo.admin.domain.Fixture;
-import com.fullcycle.catalogo.admin.domain.castmember.CastMemberID;
-import com.fullcycle.catalogo.admin.domain.category.CategoryID;
-import com.fullcycle.catalogo.admin.domain.genre.GenreID;
 import com.fullcycle.catalogo.admin.domain.pagination.Pagination;
-import com.fullcycle.catalogo.admin.domain.video.Video;
 import com.fullcycle.catalogo.admin.domain.video.VideoGateway;
 import com.fullcycle.catalogo.admin.domain.video.VideoPreview;
 import com.fullcycle.catalogo.admin.domain.video.query.VideoSearchQuery;
@@ -25,10 +21,10 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class ListVideoUseCaseTest extends UseCaseTest {
+public class ListVideosUseCaseTest extends UseCaseTest {
 
     @InjectMocks
-    private DefaultListVideoUseCase useCase;
+    private DefaultListVideosUseCase useCase;
 
     @Mock
     private VideoGateway videoGateway;

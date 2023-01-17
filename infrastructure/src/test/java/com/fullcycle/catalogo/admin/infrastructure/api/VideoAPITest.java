@@ -14,7 +14,7 @@ import com.fullcycle.catalogo.admin.application.video.media.upload.UploadMediaOu
 import com.fullcycle.catalogo.admin.application.video.media.upload.UploadMediaUseCase;
 import com.fullcycle.catalogo.admin.application.video.retrieve.get.GetVideoByIdUseCase;
 import com.fullcycle.catalogo.admin.application.video.retrieve.get.VideoOutput;
-import com.fullcycle.catalogo.admin.application.video.retrieve.list.ListVideoUseCase;
+import com.fullcycle.catalogo.admin.application.video.retrieve.list.ListVideosUseCase;
 import com.fullcycle.catalogo.admin.application.video.retrieve.list.VideoListOutput;
 import com.fullcycle.catalogo.admin.application.video.update.UpdateVideoCommand;
 import com.fullcycle.catalogo.admin.application.video.update.UpdateVideoOutput;
@@ -79,7 +79,7 @@ public class VideoAPITest {
     private DeleteVideoUseCase deleteVideoUseCase;
 
     @MockBean
-    private ListVideoUseCase listVideosUseCase;
+    private ListVideosUseCase listVideosUseCase;
 
     @MockBean
     private GetMediaUseCase getMediaUseCase;
