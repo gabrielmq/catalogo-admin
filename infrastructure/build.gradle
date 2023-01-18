@@ -8,7 +8,7 @@ buildscript {
 }
 
 plugins {
-    id 'java'
+    id 'java-conventions'
     id 'application'
     id 'org.springframework.boot' version '2.6.7'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
@@ -16,10 +16,6 @@ plugins {
 }
 
 group 'com.fullcycle.catalogo.admin.infrastructure'
-
-repositories {
-    mavenCentral()
-}
 
 bootJar {
     archiveName 'application.jar'
@@ -31,7 +27,6 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":application"))
 
-    implementation('io.vavr:vavr:0.10.4')
     implementation('com.fasterxml.jackson.module:jackson-module-afterburner')
     implementation('mysql:mysql-connector-java')
 
@@ -66,8 +61,4 @@ flyway {
     url = System.getenv('FLYWAY_DB') ?: 'jdbc:mysql://localhost:3306/adm_videos'
     user = System.getenv('FLYWAY_USER') ?: 'root'
     password = System.getenv('FLYWAY_PASS') ?: '123456'
-}
-
-test {
-    useJUnitPlatform()
 }
