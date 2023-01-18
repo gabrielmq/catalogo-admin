@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'jacoco'
 }
 
 version '1.0-SNAPSHOT'
@@ -19,4 +20,8 @@ dependencies {
 
 tasks.named("test") {
     useJUnitPlatform()
+}
+
+jacoco {
+    toolVersion = "0.8.8"
 }
