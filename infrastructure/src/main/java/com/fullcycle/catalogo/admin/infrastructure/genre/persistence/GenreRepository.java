@@ -12,6 +12,6 @@ import java.util.List;
 public interface GenreRepository extends JpaRepository<GenreJpaEntity, String> {
     Page<GenreJpaEntity> findAll(Specification<GenreJpaEntity> whereClause, Pageable page);
 
-    @Query(value = "SELECT c.id FROM Genres g WHERE g.id IN :ids")
+    @Query(value = "SELECT g.id FROM Genres g WHERE g.id IN :ids")
     List<String> existsByIds(@Param("ids") List<String> ids);
 }
