@@ -1,6 +1,7 @@
 package com.fullcycle.catalogo.admin;
 
 import com.fullcycle.catalogo.admin.infrastructure.configuration.ObjectMapperConfiguration;
+import org.junit.jupiter.api.Tag;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.annotation.AliasFor;
@@ -13,6 +14,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Inherited
 @WebMvcTest
+@Tag("integrationTest")
 @ActiveProfiles("test-integration")
 @Target(TYPE)
 @Retention(RUNTIME)

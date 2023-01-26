@@ -1,11 +1,12 @@
 package com.fullcycle.catalogo.admin.domain.castmember;
 
+import com.fullcycle.catalogo.admin.domain.UnitTest;
 import com.fullcycle.catalogo.admin.domain.exceptions.NotificationException;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class CastMemberTest {
+public class CastMemberTest extends UnitTest {
 
     @Test
     public void givenAValidParams_whenCallsNewMember_thenInstantiateACastMember() {

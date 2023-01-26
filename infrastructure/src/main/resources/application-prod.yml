@@ -4,10 +4,10 @@ spring:
     hibernate:
       ddl-auto: none
 mysql:
-  username: ${DATABASE_MYSQL_USERNAME:root}
-  password: ${DATABASE_MYSQL_PASSWORD:123456}
+  username: ${MYSQL_USERNAME}
+  password: ${MYSQL_PASSWORD}
   schema: adm_videos
-  url: ${DATABASE_MYSQL_URL:localhost:3306}
+  url: ${DATABASE_MYSQL_URL}
 
 amqp:
   host: ${AMQP_RABBIT_HOST}

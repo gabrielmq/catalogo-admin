@@ -1,5 +1,6 @@
 package com.fullcycle.catalogo.admin.domain.genre;
 
+import com.fullcycle.catalogo.admin.domain.UnitTest;
 import com.fullcycle.catalogo.admin.domain.category.CategoryID;
 import com.fullcycle.catalogo.admin.domain.exceptions.DomainException;
 import org.junit.jupiter.api.Test;
@@ -9,7 +10,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class GenreTest {
+public class GenreTest extends UnitTest {
 
     @Test
     public void givenAValidParams_whenCallNewGenre_thenShouldInstantiateAGenre() {

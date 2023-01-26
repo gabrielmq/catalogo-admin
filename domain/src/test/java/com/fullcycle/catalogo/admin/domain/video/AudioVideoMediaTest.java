@@ -1,5 +1,6 @@
 package com.fullcycle.catalogo.admin.domain.video;
 
+import com.fullcycle.catalogo.admin.domain.UnitTest;
 import com.fullcycle.catalogo.admin.domain.utils.IDUtils;
 import com.fullcycle.catalogo.admin.domain.video.media.AudioVideoMedia;
 import com.fullcycle.catalogo.admin.domain.video.media.MediaStatus;
@@ -7,7 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class AudioVideoMediaTest {
+public class AudioVideoMediaTest extends UnitTest {
 
     @Test
     public void givenValidParams_whenCallsNewAudioVideo_thenShouldReturnInstance() {
