@@ -8,7 +8,6 @@ on:
       - develop
       - 'hotfix/**'
       - 'releases/**'
-      - 'feat/**'
   workflow_dispatch:
 
 env:
