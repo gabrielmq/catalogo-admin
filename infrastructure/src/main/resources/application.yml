@@ -57,7 +57,7 @@ logging:
 
 gcloud:
   credentials: ${GCLOUD_CREDENTIALS}
-  project-id: ${GCLOUD_PROJECT_ID}
+  project-id: ${GCLOUD_CREDENTIALS}
   storage:
     catalogo-videos:
       bucket: bucket
