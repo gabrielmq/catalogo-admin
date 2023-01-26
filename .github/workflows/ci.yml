@@ -4,9 +4,8 @@ on:
   # habilita o gatilho de push em qualquer branch
   push:
     branches:
-      - 'features/**'
-      - 'bugfixes/**'
-      - 'modulos/**'
+      - 'feature/**'
+      - 'bugfix/**'
   # habilita o gatilho manual através da interface do Github Actions
   workflow_dispatch:
 
