@@ -1,15 +1,13 @@
 package com.fullcycle.catalogo.admin.infrastructure.castmember;
 
-import com.fullcycle.catalogo.admin.domain.Fixture;
 import com.fullcycle.catalogo.admin.MySQLGatewayTest;
+import com.fullcycle.catalogo.admin.domain.Fixture;
 import com.fullcycle.catalogo.admin.domain.castmember.CastMember;
 import com.fullcycle.catalogo.admin.domain.castmember.CastMemberID;
 import com.fullcycle.catalogo.admin.domain.castmember.CastMemberType;
-import com.fullcycle.catalogo.admin.domain.pagination.Pagination;
 import com.fullcycle.catalogo.admin.domain.pagination.SearchQuery;
 import com.fullcycle.catalogo.admin.infrastructure.castmember.persistence.CastMemberJpaEntity;
 import com.fullcycle.catalogo.admin.infrastructure.castmember.persistence.CastMemberRepository;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -17,7 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @MySQLGatewayTest
 class CastMemberMySQLGatewayTest {
@@ -294,6 +293,29 @@ class CastMemberMySQLGatewayTest {
             assertEquals(expectedName, actualPage.items().get(index).getName());
             index++;
         }
+    }
+
+
+    @Test
+    public void givenPrePersistedCastMembers_whenCallsExistsByIds_thenShouldReturnIds() {
+        // given
+        final var aMember = CastMember.newMember(Fixture.name(), Fixture.CastMembers.type());
+        assertEquals(0, castMemberRepository.count());
+
+        castMemberRepository.saveAll(List.of(
+            CastMemberJpaEntity.from(aMember)
+        ));
+
+        assertEquals(1, castMemberRepository.count());
+
+        final var expectedIds = List.of(aMember.getId());
+        final var ids = List.of(aMember.getId(), CastMemberID.from("123"));
+
+        // when
+        final var actualResult = castMemberGateway.existsByIds(ids);
+
+        // then
+        assertTrue(expectedIds.size() == actualResult.size() && expectedIds.containsAll(actualResult));
     }
 
     private void mockMembers() {
