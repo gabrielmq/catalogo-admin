@@ -472,6 +472,30 @@ public class GenreMySQLGatewayTest {
         }
     }
 
+    @Test
+    public void givenPrePersistedGenres_whenCallsExistsByIds_thenShouldReturnIds() {
+        // given
+        final var acao = Genre.newGenreWith("Acao", true);
+        final var comedia = Genre.newGenreWith("Comédia",true);
+        assertEquals(0, genreRepository.count());
+
+        genreRepository.saveAll(List.of(
+            GenreJpaEntity.from(acao),
+            GenreJpaEntity.from(comedia)
+        ));
+
+        assertEquals(2, genreRepository.count());
+
+        final var expectedIds = List.of(acao.getId(), comedia.getId());
+        final var ids = List.of(acao.getId(), comedia.getId(), GenreID.from("123"));
+
+        // when
+        final var actualResult = genreGateway.existsByIds(ids);
+
+        // then
+        assertTrue(expectedIds.size() == actualResult.size() && expectedIds.containsAll(actualResult));
+    }
+
     private void mockGenres() {
         genreRepository.saveAllAndFlush(List.of(
             GenreJpaEntity.from(Genre.newGenreWith("Comédia romântica", true)),
