@@ -24,12 +24,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.List;
 import java.util.Objects;
 
+import static com.fullcycle.catalogo.admin.APITest.GENRES_JWT;
 import static org.hamcrest.Matchers.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -74,6 +73,7 @@ public class GenreAPITest {
         when(createGenreUseCase.execute(any())).thenReturn(CreateGenreOutput.from(expectedId));
 
         final var aRequest = post("/genres")
+                .with(GENRES_JWT)
                 .contentType(APPLICATION_JSON)
                 .content(mapper.writeValueAsString(aCommand));
 
@@ -105,6 +105,7 @@ public class GenreAPITest {
             .thenThrow(new NotificationException("Error", Notification.create(new Error(expectedErrorMessage))));
 
         final var aRequest = post("/genres")
+                .with(GENRES_JWT)
                 .contentType(APPLICATION_JSON)
                 .content(mapper.writeValueAsString(aCommand));
 
@@ -138,6 +139,7 @@ public class GenreAPITest {
         when(getGenreByIdUseCase.execute(any())).thenReturn(GenreOutput.from(aGenre));
 
         final var aRequest = get("/genres/{id}", expectedId)
+                .with(GENRES_JWT)
                 .accept(APPLICATION_JSON)
                 .contentType(APPLICATION_JSON);
 
@@ -164,6 +166,7 @@ public class GenreAPITest {
         when(getGenreByIdUseCase.execute(any())).thenThrow(NotFoundException.with(Genre.class, expectedId));
 
         final var aRequest = get("/genres/{id}", expectedId.getValue())
+                .with(GENRES_JWT)
                 .accept(APPLICATION_JSON)
                 .contentType(APPLICATION_JSON);
 
@@ -191,6 +194,7 @@ public class GenreAPITest {
         when(updateGenreUseCase.execute(any())).thenReturn(UpdateGenreOutput.from(expectedId));
 
         final var aRequest = put("/genres/{id}", expectedId)
+                .with(GENRES_JWT)
                 .contentType(APPLICATION_JSON)
                 .content(mapper.writeValueAsString(aCommand));
 
@@ -225,6 +229,7 @@ public class GenreAPITest {
             .thenThrow(new NotificationException("Error", Notification.create(new Error(expectedErrorMessage))));
 
         final var aRequest = put("/genres/{id}", expectedId)
+                .with(GENRES_JWT)
                 .contentType(APPLICATION_JSON)
                 .content(mapper.writeValueAsString(aCommand));
 
@@ -250,8 +255,9 @@ public class GenreAPITest {
 
         doNothing().when(deleteGenreUseCase).execute(any());
 
-        final var request =
-            delete("/genres/{id}", expectedId).accept(APPLICATION_JSON);
+        final var request = delete("/genres/{id}", expectedId)
+                    .with(GENRES_JWT)
+                    .accept(APPLICATION_JSON);
 
         mvc.perform(request)
             .andExpect(status().isNoContent());
@@ -276,6 +282,7 @@ public class GenreAPITest {
             .thenReturn(new Pagination<>(expectedPage, expectedPerPage, expectedTotal, expectedItems));
 
         final var request = get("/genres")
+                .with(GENRES_JWT)
                 .queryParam("page", String.valueOf(expectedPage))
                 .queryParam("perPage", String.valueOf(expectedPerPage))
                 .queryParam("sort", expectedSort)
