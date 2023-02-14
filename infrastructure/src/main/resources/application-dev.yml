@@ -5,6 +5,10 @@ server:
       worker: 10
       io: 2
 
+keycloak:
+  realm: catalogo-admin
+  host: http://localhost:8443
+
 mysql:
   username: root
   password: 123456
