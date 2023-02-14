@@ -23,8 +23,9 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @ExtendWith(MySQLCleanUpExtension.class)
 @ComponentScan(
     basePackages = "com.fullcycle.catalogo.admin",
+    useDefaultFilters = false,
     includeFilters = {
-        @ComponentScan.Filter(type = FilterType.REGEX, pattern = ".[MySQLGateway]")
+        @ComponentScan.Filter(type = FilterType.REGEX, pattern = ".*MySQLGateway")
     }
 )
 public @interface MySQLGatewayTest {
