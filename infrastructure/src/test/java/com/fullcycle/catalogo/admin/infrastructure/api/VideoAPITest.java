@@ -46,6 +46,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import static com.fullcycle.catalogo.admin.APITest.VIDEOS_JWT;
 import static com.fullcycle.catalogo.admin.domain.utils.CollectionUtils.mapTo;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
@@ -127,6 +128,7 @@ public class VideoAPITest {
                 .file(expectedBanner)
                 .file(expectedThumb)
                 .file(expectedThumbHalf)
+                .with(VIDEOS_JWT)
                 .param("title", expectedTitle)
                 .param("description", expectedDescription)
                 .param("year_launched", String.valueOf(expectedLaunchYear.getValue()))
@@ -178,6 +180,7 @@ public class VideoAPITest {
 
         // when
         final var aRequest = multipart("/videos")
+                .with(VIDEOS_JWT)
                 .accept(APPLICATION_JSON)
                 .contentType(MULTIPART_FORM_DATA);
 
@@ -228,6 +231,7 @@ public class VideoAPITest {
 
         // when
         final var aRequest = post("/videos")
+                .with(VIDEOS_JWT)
                 .accept(APPLICATION_JSON)
                 .contentType(APPLICATION_JSON)
                 .content(mapper.writeValueAsString(aCommand));
@@ -270,6 +274,7 @@ public class VideoAPITest {
 
         // when
         final var aRequest = post("/videos")
+                .with(VIDEOS_JWT)
                 .accept(APPLICATION_JSON)
                 .contentType(APPLICATION_JSON)
                 .content(
@@ -293,6 +298,7 @@ public class VideoAPITest {
     public void givenAnEmptyBody_whenCallsCreatePartial_thenShouldReturnError() throws Exception {
         // when
         final var aRequest = post("/videos")
+                .with(VIDEOS_JWT)
                 .accept(APPLICATION_JSON)
                 .contentType(APPLICATION_JSON);
 
@@ -351,6 +357,7 @@ public class VideoAPITest {
 
         // when
         final var aRequest = get("/videos/{id}",  expectedId)
+                .with(VIDEOS_JWT)
                 .accept(APPLICATION_JSON);
 
         final var response = mvc.perform(aRequest);
@@ -409,6 +416,7 @@ public class VideoAPITest {
 
         // when
         final var aRequest = get("/videos/{id}",  expectedId)
+                .with(VIDEOS_JWT)
                 .accept(APPLICATION_JSON);
 
         final var response = mvc.perform(aRequest);
@@ -457,6 +465,7 @@ public class VideoAPITest {
 
         // when
         final var aRequest = put("/videos/{id}", expectedId.getValue())
+                .with(VIDEOS_JWT)
                 .accept(APPLICATION_JSON)
                 .contentType(APPLICATION_JSON)
                 .content(mapper.writeValueAsString(aCommand));
@@ -528,6 +537,7 @@ public class VideoAPITest {
 
         // when
         final var aRequest = put("/videos/{id}", expectedId.getValue())
+                .with(VIDEOS_JWT)
                 .accept(APPLICATION_JSON)
                 .contentType(APPLICATION_JSON)
                 .content(mapper.writeValueAsString(aCommand));
@@ -553,7 +563,8 @@ public class VideoAPITest {
         doNothing().when(deleteVideoUseCase).execute(any());
 
         // when
-        final var aRequest = delete("/videos/{id}", expectedId.getValue());
+        final var aRequest = delete("/videos/{id}", expectedId.getValue())
+                .with(VIDEOS_JWT);
 
         final var response = mvc.perform(aRequest);
 
@@ -587,6 +598,7 @@ public class VideoAPITest {
 
         // when
         final var aRequest = get("/videos")
+                .with(VIDEOS_JWT)
                 .queryParam("page", String.valueOf(expectedPage))
                 .queryParam("perPage", String.valueOf(expectedPerPage))
                 .queryParam("sort", expectedSort)
@@ -648,6 +660,7 @@ public class VideoAPITest {
 
         // when
         final var aRequest = get("/videos")
+                .with(VIDEOS_JWT)
                 .accept(APPLICATION_JSON);
 
         final var response = this.mvc.perform(aRequest);
@@ -692,7 +705,9 @@ public class VideoAPITest {
         when(getMediaUseCase.execute(any())).thenReturn(expectedMedia);
 
         // when
-        final var aRequest = get("/videos/{id}/medias/{type}", expectedId.getValue(), expectedMediaType);
+        final var aRequest = get("/videos/{id}/medias/{type}", expectedId.getValue(), expectedMediaType)
+            .with(VIDEOS_JWT);
+
         final var response = mvc.perform(aRequest);
 
         // then
@@ -731,6 +746,7 @@ public class VideoAPITest {
         // when
         final var aRequest = multipart("/videos/{id}/medias/{type}", expectedId.getValue(), expectedType)
                 .file(expectedVideo)
+                .with(VIDEOS_JWT)
                 .accept(APPLICATION_JSON)
                 .contentType(MULTIPART_FORM_DATA);
 
@@ -772,6 +788,7 @@ public class VideoAPITest {
         // when
         final var aRequest = multipart("/videos/{id}/medias/INVALID", expectedId.getValue())
                 .file(expectedVideo)
+                .with(VIDEOS_JWT)
                 .accept(APPLICATION_JSON)
                 .contentType(MULTIPART_FORM_DATA);
 

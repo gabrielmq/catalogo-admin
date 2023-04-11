@@ -2,7 +2,6 @@ package com.fullcycle.catalogo.admin.e2e.category;
 
 import com.fullcycle.catalogo.admin.E2ETest;
 import com.fullcycle.catalogo.admin.domain.category.CategoryID;
-import com.fullcycle.catalogo.admin.domain.genre.GenreID;
 import com.fullcycle.catalogo.admin.e2e.MockDsl;
 import com.fullcycle.catalogo.admin.infrastructure.category.models.UpdateCategoryRequest;
 import com.fullcycle.catalogo.admin.infrastructure.category.persistence.CategoryRepository;
@@ -16,6 +15,7 @@ import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
+import static com.fullcycle.catalogo.admin.APITest.ADMIN_JWT;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.*;
@@ -177,6 +177,7 @@ public class CategoryE2ETest implements MockDsl {
         assertEquals(0, categoryRepository.count());
 
         final var aRequest = get("/categories/123")
+                .with(ADMIN_JWT)
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON);
 

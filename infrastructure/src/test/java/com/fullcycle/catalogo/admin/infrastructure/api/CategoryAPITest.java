@@ -28,10 +28,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.List;
 import java.util.Objects;
 
+import static com.fullcycle.catalogo.admin.APITest.CATEGORIES_JWT;
 import static io.vavr.API.Left;
 import static io.vavr.API.Right;
 import static org.hamcrest.Matchers.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.*;
@@ -78,6 +78,7 @@ public class CategoryAPITest {
             .thenReturn(Right(CreateCategoryOutput.from(CategoryID.from("123").getValue())));
 
         final var request = post("/categories")
+                .with(CATEGORIES_JWT)
                 .contentType(APPLICATION_JSON)
                 .content(mapper.writeValueAsString(aInput));
 
@@ -110,6 +111,7 @@ public class CategoryAPITest {
                 .thenReturn(Left(Notification.create(new Error(expectedErrorMessage))));
 
         final var request = post("/categories")
+                .with(CATEGORIES_JWT)
                 .contentType(APPLICATION_JSON)
                 .content(mapper.writeValueAsString(aInput));
 
@@ -143,6 +145,7 @@ public class CategoryAPITest {
             .thenThrow(DomainException.with(new Error(expectedErrorMessage)));
 
         final var request = post("/categories")
+                .with(CATEGORIES_JWT)
                 .contentType(APPLICATION_JSON)
                 .content(mapper.writeValueAsString(aInput));
 
@@ -178,6 +181,7 @@ public class CategoryAPITest {
 
         final var request =
                 get("/categories/{id}", expectedId)
+                    .with(CATEGORIES_JWT)
                     .accept(APPLICATION_JSON)
                     .contentType(APPLICATION_JSON);
 
@@ -206,6 +210,7 @@ public class CategoryAPITest {
 
         final var request =
                 get("/categories/{id}", expectedId)
+                    .with(CATEGORIES_JWT)
                     .accept(APPLICATION_JSON)
                     .contentType(APPLICATION_JSON);
 
@@ -232,6 +237,7 @@ public class CategoryAPITest {
                 .thenReturn(Right(UpdateCategoryOutput.from(expectedId)));
 
         final var request = put("/categories/{id}", expectedId)
+                .with(CATEGORIES_JWT)
                 .accept(APPLICATION_JSON)
                 .contentType(APPLICATION_JSON)
                 .content(mapper.writeValueAsString(aInput));
@@ -265,6 +271,7 @@ public class CategoryAPITest {
                 .thenThrow(NotFoundException.with(Category.class, CategoryID.from(expectedId)));
 
         final var request = put("/categories/{id}", expectedId)
+                .with(CATEGORIES_JWT)
                 .accept(APPLICATION_JSON)
                 .contentType(APPLICATION_JSON)
                 .content(mapper.writeValueAsString(aInput));
@@ -299,6 +306,7 @@ public class CategoryAPITest {
             .thenReturn(Left(Notification.create(new Error(expectedErrorMessage))));
 
         final var request = put("/categories/{id}", expectedId)
+                .with(CATEGORIES_JWT)
                 .accept(APPLICATION_JSON)
                 .contentType(APPLICATION_JSON)
                 .content(mapper.writeValueAsString(aInput));
@@ -326,6 +334,7 @@ public class CategoryAPITest {
 
         final var request =
                 delete("/categories/{id}", expectedId)
+                    .with(CATEGORIES_JWT)
                     .accept(APPLICATION_JSON)
                     .contentType(APPLICATION_JSON);
 
@@ -354,6 +363,7 @@ public class CategoryAPITest {
             .thenReturn(new Pagination<>(expectedPage, expectedPerPage, expectedTotal, expectedItems));
 
         final var request = get("/categories")
+                .with(CATEGORIES_JWT)
                 .accept(APPLICATION_JSON)
                 .queryParam("page", String.valueOf(expectedPage))
                 .queryParam("perPage", String.valueOf(expectedPerPage))

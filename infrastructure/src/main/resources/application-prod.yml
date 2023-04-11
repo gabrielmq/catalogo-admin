@@ -3,6 +3,11 @@ spring:
     show-sql: false
     hibernate:
       ddl-auto: none
+
+keycloak:
+  realm: ${KEYCLOAK_REALM}
+  host: ${KEYCLOAK_HOST}
+
 mysql:
   username: ${MYSQL_USERNAME}
   password: ${MYSQL_PASSWORD}
