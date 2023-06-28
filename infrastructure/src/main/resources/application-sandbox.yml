@@ -1,0 +1,24 @@
+server:
+  port: 8080
+  undertow:
+    threads:
+      worker: 10
+      io: 2
+
+keycloak:
+  realm: ${KEYCLOAK_REALM}
+  host: ${KEYCLOAK_HOST}
+
+mysql:
+  username: ${MYSQL_USERNAME}
+  password: ${MYSQL_PASSWORD}
+  schema: adm_videos
+  url: ${DATABASE_MYSQL_URL}
+
+amqp:
+  admin:
+    auto-create: ${AMQP_ADMIN_AUTO_CREATE}
+  host: ${AMQP_RABBIT_HOST}
+  port: ${AMQP_RABBIT_PORT}
+  username: ${AMQP_RABBIT_USERNAME}
+  password: ${AMQP_RABBIT_PASSWORD}
