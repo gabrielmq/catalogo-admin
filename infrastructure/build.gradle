@@ -28,6 +28,9 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":application"))
 
+    implementation('ch.qos.logback:logback-classic:1.2.7')
+    implementation('net.logstash.logback:logstash-logback-encoder:7.0.1')
+
     implementation('com.fasterxml.jackson.module:jackson-module-afterburner')
     implementation('mysql:mysql-connector-java')
 
