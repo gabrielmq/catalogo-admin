@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.Objects;
 
-@Configuration
+@Configuration(proxyBeanMethods = false)
 public class CastMemberUseCaseConfiguration {
     private final CastMemberGateway castMemberGateway;
 

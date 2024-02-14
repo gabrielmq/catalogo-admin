@@ -9,7 +9,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-@Configuration
+@Configuration(proxyBeanMethods = false)
 public class AMQPConfiguration {
 
     @Bean
@@ -26,7 +26,7 @@ public class AMQPConfiguration {
         return new QueueProperties();
     }
 
-    @Configuration
+    @Configuration(proxyBeanMethods = false)
     static class Admin {
         @Bean
         @VideoEvents

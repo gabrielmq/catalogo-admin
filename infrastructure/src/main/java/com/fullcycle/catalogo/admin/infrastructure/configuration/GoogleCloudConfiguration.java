@@ -18,7 +18,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.Base64;
 
-@Configuration
+@Configuration(proxyBeanMethods = false)
 @Profile({ "!dev & !test-integration & !test-e2e" })
 public class GoogleCloudConfiguration {
     @Bean

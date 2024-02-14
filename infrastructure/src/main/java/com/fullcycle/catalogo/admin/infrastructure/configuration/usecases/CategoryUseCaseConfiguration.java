@@ -14,7 +14,7 @@ import com.fullcycle.catalogo.admin.domain.category.CategoryGateway;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-@Configuration
+@Configuration(proxyBeanMethods = false)
 public class CategoryUseCaseConfiguration {
 
     private final CategoryGateway categoryGateway;

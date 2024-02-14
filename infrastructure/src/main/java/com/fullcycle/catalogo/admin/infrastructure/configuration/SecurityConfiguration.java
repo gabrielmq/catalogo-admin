@@ -24,9 +24,9 @@ import java.util.stream.Stream;
 
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
-@Configuration
 @Profile("!dev")
 @EnableWebSecurity
+@Configuration(proxyBeanMethods = false)
 @EnableMethodSecurity(securedEnabled = true, jsr250Enabled = true)
 public class SecurityConfiguration {
 

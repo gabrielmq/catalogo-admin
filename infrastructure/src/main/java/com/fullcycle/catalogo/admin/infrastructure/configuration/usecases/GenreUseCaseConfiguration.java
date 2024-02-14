@@ -17,7 +17,7 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.Objects;
 
-@Configuration
+@Configuration(proxyBeanMethods = false)
 public class GenreUseCaseConfiguration {
     private final GenreGateway genreGateway;
     private final CategoryGateway categoryGateway;
